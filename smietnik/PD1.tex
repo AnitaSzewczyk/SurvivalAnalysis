@@ -1,0 +1,47 @@
+\documentclass[10pt]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage[left=2.5cm, right=2.5cm, top=2cm, bottom=2.8cm]{geometry}
+
+\begin{document}
+\author{Grupa 9}
+\title{Analiza przeżycia -- praca domowa 1}
+\maketitle
+
+Plik zawiera dane dla 686 chorych na raka piersi oraz następujące zmienne:
+\begin{itemize}
+\item \texttt{id} -- identyfikator chorej -- pomijamy
+\item \texttt{meno} -- wskaźnik menopauzy (1 –- nie, 2 -- tak) 
+\item \texttt{horm} -- wskaźnik użycia terapii hormonalnej (1 –- nie, 2 -- tak) 
+\item \texttt{prog} -- wskaźnik receptorów progesteronu (0 –- ujemny, 1 –- dodatni) 
+\item \texttt{estr} -- wskaźnik receptorów estrogenu (0 –- ujemny, 1 –- dodatni) 
+\item \texttt{grade} -- stopień zróżnicowania komórek nowotworu (1 –- wysoki, 2 -- średni, 3 -- niski) 
+\item \texttt{size} -- wielkość guza (w cm) -- zmienna ciągła
+\item \texttt{nodes} -- liczba węzłów chłonnych z przerzutami nowotworu -- zmienna ciągła
+\item \texttt{rectime} -- czas przeżycia bez nawrotu choroby (dni) 
+\item \texttt{censrec} -- wskaźnik zdarzenia (0 –- cenzurowanie, 1 -- zgon lub nawrót choroby)
+\end{itemize}
+
+Interesuje nas pytanie, które zmienne mają wpływ na czas przeżycia bez nawrotu choroby. \\\\
+
+Proponujemy model proporcjonalnych hazardów (PH). \\
+Sprawdzamy spełnianie założeń modelu dla każdej ze zmiennych (poza ciągłymi) poprzez narysowanie krzywych Kaplana-Meiera oraz wykresów transformacji log(-log) krzywych przeżycia. \\
+Krzywe dla rożnych poziomów zmiennej \texttt{meno} przecinają się, co oznacza niespełnianie założeń modelu PH.
+Dla pozostałych zmiennych krzywe nie przecinają się oraz wykresy transformacji możemy uznać za nieodstające od równoległych. \\\\
+Proponujemy więc model proporcjonalnych hazardów warstwowany względem zmiennej \texttt{mono}. \\\\
+W celu sprawdzenia, czy zmienne ciągłe nie powinny zostać przekształcone przed wprowadzeniem ich do~modelu, wykonujemy wykresy reszt martyngałowych pustego modelu od każdej z tych zmiennych. Wykresy sugerują przekształcenie zmiennych poprzez logarytm, więc dla potwierdzenia naszych przypuszczeń rysujmy jeszcze wykresy reszt od logarytmów zmiennych i obserwujemy, że wykresy są teraz bliższe liniowym. Wprowadzamy więc do modelu zmienne ciągłe przekształcone logarytmem.  \\\\
++ testy logrank dopisać ?? \\\\
+W celu formalnej oceny spełnienia założeń PH przeprowadzamy test Shoenfelda \\
++ wyniki testu dopisac ?? \\
+Zarówno globalny test, jak i wszystkie pojedyncze testy mają p-wartość większą od 0.05, więc nie mamy podstaw do~odrzucenia hipotezy postulującej, że współczynniki przy tych zmiennych są stałe w czasie.  \\
+Przyjrzyjmy się również wykresom skalowanych reszt Schoenfelda dla każdej zmiennej w modelu od czasu i~dopasujmy krzywe do danych. Dołączone granice dla 95\% obszaru ufności nie dają podstawy do odrzuceni hipotezy, że krzywa nie różni się od horyzontalnej.  \\
+Zarówno wykresy, jak i wyniki testu nie sugerują odstępstw od założenia PH. \\\\
+W stworzonym modelu zmiennymi istotnymi statystycznie na poziomie istotności 0.05 są: \texttt{horm}, \texttt{prog}, log(\texttt{nodes}). Współczynniki modelu przy tych zmiennych wynoszą odpowiednio: -0.39, -0.69, 0.49. Oznacza to, że jeśli została użyta terapia hormonalna, to hazard zgonu lub nawrotu choroby zmienia się exp(-0.39)=0.68 raza w stosunku do nie użycia terapii hormonalnej (gdy wszystkie inne zmienne są takie same). Jeśli wskaźnik receptorów progesteronu zmienia się z ujemnego na dodatni, to hazard zmieni się o exp(-0.69)=0.5 raza, natomiast gdy logarytm liczby węzłów chłonnych z przerzutami nowotworu wzrośnie o 1, to hazard zwiększy się exp(0.49)=1.63 raza. \\\\
+Podsumowanie modelu jest następujące:\\
++ podsumowanie wkleić ??\\\\
+Testy Likelihood, Wald i Score dają p-wartość mniejszą od 0.05, co oznacza, że odrzucamy hipotezę o tym, że model pusty jest równie dobrze dopasowany jak dopasowany model na korzyść hipotezy, że dopasowany model jest od niego lepszy. <- poprawić. \\\\
+W celu sprawdzenia  dopasowania modelu rysujemy wykresy reszt dewiancji/martyngałowych od liniowej kombinacji zmiennych/indeks.  
+Na żadnym z wykresów nie można wskazać wyraźnie odstających reszt. Wykres reszt dewiancji od indeksu można uznać za symetryczny, pozostałe niekoniecznie, co sugeruje, że dopasowany model nie jest perfekcyjny. 
+
+\end{document}
