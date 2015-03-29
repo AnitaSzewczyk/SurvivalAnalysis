@@ -149,7 +149,7 @@ Aby potwierdzić wnioski płynące z graficznej prezentacji krzywych przeżycia,
 przyjęcia hipotez alternatywnych o tym, że krzywe przeżycia dla danych zmiennych różnią się. Dla zmiennej \textsf{meno} p-wartość $0.597$ nie daje podstaw \text{do odrzucenia} hipotezy zerowej (dla danego poziomu istnotności), mówiącej o równości krzywych przeżycia dla różnych poziomów tej zmiennej.
 
 ```{r, echo=FALSE, eval=FALSE}
-model <- coxph(Surv(rectime,censrec)~horm+prog+estr+grade+strata(meno)+log(size)+log(nodes), data = dane) 
+model <- coxph(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+strata(meno)+log(size)+log(nodes), data = dane) 
 cox.zph(model, transform = "identity") -> x
 knitr::kable( round(x$table, digits = 3), format="latex")
 ```
@@ -193,19 +193,21 @@ dev.off()
 \toprule%
   & $\rho$ & $\chi^2$ & p-wartość\\ \toprule 
 
-horm & -0.008 & 0.019 & 0.891\\
+horm & -0.009 & 0.024 & 0.876\\
 
-prog & 0.036 & 0.376 & 0.540\\
+prog & 0.036 & 0.369 & 0.543\\
 
-estr & 0.071 & 1.483 & 0.223\\
+estr & 0.071 & 1.458 & 0.227\\
 
-grade & -0.083 & 1.826 & 0.177\\
+as.factor(grade)2 & -0.052 & 0.811 & 0.368\\
 
-log(size) & 0.008 & 0.020 & 0.888\\
+as.factor(grade)3 & -0.089 & 2.347 & 0.126\\
 
-log(nodes) & -0.049 & 0.799 & 0.372\\
+log(size) & 0.011 & 0.037 & 0.848\\
 
-GLOBAL & NA & 9.599 & 0.143\\  \bottomrule
+log(nodes) & -0.051 & 0.879 & 0.349\\
+
+GLOBAL & NA & 11.322 & 0.125\\  \bottomrule
 \end{tabular}
 \vspace{-7.5pt}
 \end{wraptable}
@@ -217,7 +219,7 @@ Przyjrzano się również wykresom skalowanych reszt Schoenfelda dla każdej zmi
 ```{r, echo=FALSE, results='hide', eval=FALSE}
 pdf( file = "skal_res_shen.pdf", onefile=FALSE)
 
-par(mfrow=c(2,3))
+par(mfrow=c(2,4))
 plot(cox.zph(model, transform = "identity"), df=4,nsmo=10, se=TRUE)
 dev.off()
 ```
@@ -236,17 +238,17 @@ Zarówno wykresy skalowanych reszt Schoenfelda, jak i wyniki testu nie sugerują
 \textbf{Dopasowanie modelu proporcjonalnych hazardów.} \newline
 
 ```{r}
-model <- coxph(Surv(rectime,censrec)~horm+prog+estr+grade+strata(meno)+log(size)+log(nodes), 
+model <- coxph(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+strata(meno)+log(size)+log(nodes), 
                data = dane) 
 summary(model)
 ```
-W stworzonym modelu zmiennymi istotnymi statystycznie na poziomie istotności $0.05$ są: \texttt{horm}, \texttt{prog}, log(\texttt{nodes}). Współczynniki modelu przy tych zmiennych wynoszą odpowiednio: $-0.39, -0.69, 0.49$. Oznacza to, że jeśli została użyta terapia hormonalna, to hazard zgonu lub nawrotu choroby zmienia się $\exp(-0.39)=0.68$ raza w stosunku do nieużycia terapii hormonalnej (gdy wszystkie inne zmienne są takie same). Jeśli wskaźnik receptorów progesteronu zmienia się z ujemnego na dodatni, to hazard zmieni się o $\exp(-0.69)=0.5$ raza, natomiast gdy logarytm liczby węzłów chłonnych z przerzutami nowotworu wzrośnie o 1, to hazard zwiększy się $\exp(0.49)=1.63$ raza.
+W stworzonym modelu zmiennymi istotnymi statystycznie na poziomie istotności $0.05$ są: \texttt{horm}, \texttt{prog}, \texttt{as.factor(grade)2}, log(\texttt{nodes}). Współczynniki modelu przy tych zmiennych wynoszą odpowiednio: $-0.40, -0.67, 0.50, 0.47$. Oznacza to, że jeśli została użyta terapia hormonalna, to hazard zgonu lub nawrotu choroby zmienia się $\exp(-0.40)=0.66$ raza w stosunku do nieużycia terapii hormonalnej (gdy wszystkie inne zmienne są takie same). Jeśli wskaźnik receptorów progesteronu zmienia się z ujemnego na dodatni, to hazard zmieni się o $\exp(-0.67)=0.5$ raza, natomiast gdy logarytm liczby węzłów chłonnych z przerzutami nowotworu wzrośnie o 1, to hazard zwiększy się $\exp(0.47)=1.61$ raza. Zmiana z grade (stopień zróżnicowania komórek nowotworu (1–wysoki, 2–średni) z 1 do 2 zwiększa hazard $\exp(0.5)=1.65$ raza.  
 
 \textcolor{red}{Testy Likelihood, Wald i Score dają p-wartość mniejszą od 0.05, co oznacza, że odrzucamy hipotezę o tym, że model pusty jest równie dobrze dopasowany jak dopasowany model na korzyść hipotezy, że dopasowany model jest od niego lepszy. <- poprawić.}
 
 \newpage
 \textbf{Sprawdzenie dopasowania modelu proporcjonalnych hazardów.} \newline
-W celu sprawdzenia dopasowania modelu wygenerowano wykresy reszt dewiancji/martyngałowych od liniowej kombinacji zmiennych/indeksów. Na żadnym z wykresów nie można wskazać wyraźnie odstających reszt (\textcolor{red}{a wykres d?}). Wykres reszt dewiancji od indeksów można uznać za symetryczny, pozostałe niekoniecznie, \text{co sugeruje}, że dopasowany model nie jest perfekcyjny. 
+W celu sprawdzenia dopasowania modelu wygenerowano wykresy reszt dewiancji/martyngałowych od liniowej kombinacji zmiennych/indeksów. Na niektórych wykresach można wskazać wyraźnie odstające reszty. Wykres reszt dewiancji od indeksów można uznać za symetryczny, pozostałe niekoniecznie, \text{co sugeruje}, że dopasowany model nie jest perfekcyjny. 
 
 
 ```{r, echo=FALSE, results='hide', eval=FALSE}
