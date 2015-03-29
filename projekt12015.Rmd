@@ -12,7 +12,7 @@ output:
 
 ```{r, echo=FALSE}
 library(knitr)
-opts_chunk$set(comment="", message=FALSE,tidy.opts=list(keep.blank.line=TRUE, width.cutoff=120),options(width=120), cache=TRUE,fig.align='center',fig.height=6, fig.width=10,fig.path='figure/beamer-',fig.show='hold',size='footnotesize', cache=FALSE)
+opts_chunk$set(comment="", message=FALSE, warning=FALSE, tidy.opts=list(keep.blank.line=TRUE, width.cutoff=120),options(width=120), cache=TRUE,fig.align='center',fig.height=6, fig.width=10,fig.path='figure/beamer-',fig.show='hold',size='footnotesize', cache=FALSE)
 ```
 
 \thispagestyle{fancy}
@@ -23,10 +23,10 @@ library(survival)
 ```
 
 Pod analizę poddano 686 pacjentek cierpiących na raka piersi. Za cel analizy postawiono
-pytanie, które zmienne mają wpływ na czas przeżycia bez nawrotu choroby. Proponujemy model \text{proporcjonalnych hazardów (PH).}
+pytanie, które zmienne mają wpływ na czas przeżycia bez nawrotu choroby. Zaproponowano model \text{proporcjonalnych hazardów (PH).}
 
 \textbf{Sprawdzenie założeń - krzywe przeżycia i ich transformacje.} \newline
-Sprawdzamy spełnianie założeń modelu dla każdej ze zmiennych (poza ciągłymi) poprzez narysowanie krzywych Kaplana-Meiera (Rysunek 1) oraz wykresów transformacji \text{\textsf{log(-log)}} krzywych przeżycia (Rysunek 2). 
+Sprawdzono spełnianie założeń modelu dla każdej ze zmiennych (poza ciągłymi) poprzez narysowanie krzywych Kaplana-Meiera (Rysunek 1) oraz wykresów transformacji \text{\textsf{log(-log)}} krzywych przeżycia \text{(Rysunek 2).} 
 ```{r, echo=FALSE, results='hide', cache=TRUE}
 pdf( file = "sc_meno.pdf", onefile=FALSE)
 plot(survfit(Surv(rectime,censrec)~meno, data = dane), col=c("orange","purple"), lty=c(1:2), lwd=3) # model warstwowy
@@ -119,8 +119,8 @@ dev.off()
 
 
 
-Krzywe przeżycia dla rożnych poziomów zmiennej \texttt{meno} przecinają się, co oznacza niespełnianie założeń modelu PH.
-Dla pozostałych zmiennych krzywe nie przecinają się oraz wykresy transformacji możemy uznać za nieodstające od równoległych. Z tej racji proponujemy model proporcjonalnych hazardów warstwowany względem zmiennej \texttt{meno}, gdyż nie ma podstaw by nie twierdzić, że założenia modelu ph nie są spełnione. 
+Krzywe przeżycia dla różnych poziomów zmiennej \texttt{meno} przecinają się, co oznacza niespełnianie założeń modelu PH.
+Dla pozostałych zmiennych krzywe nie przecinają się oraz wykresy transformacji można uznać za nieodstające od równoległych. Z tej racji zaproponowano model proporcjonalnych hazardów warstwowany względem zmiennej \texttt{meno}, gdyż nie ma podstaw by nie twierdzić, że założenia modelu PH nie są spełnione. 
 
 \begin{wraptable}{r}{6.8cm}
 \vspace{-20pt}
@@ -145,10 +145,8 @@ cat(c("\\\\ ","\\bottomrule"))
 \vspace{-7.5pt}
 \end{wraptable}
 
-Aby potwierdzić wnioski płynące z graficznej prezentacji krzywych przeżycia, przeprowadzono formalny
-test logrank dla każdej zmiennej, którego podsumowanie widać w Tabeli 1. Dla zmiennej grade przeprowadzono test logrank dla trendu z racji na naturalne uporządkowanie poziomów. Wartości krytyczne dla zmiennych \textsf{horm},
-\textsf{prog}, \textsf{estr} i \textsf{grade}(?), które są mniejsze od zakładanego poziomu istotności $\alpha=0.05$ dają statystycznie istotne podstawy do odrzucenia hipotez zerowych w testach logrank oraz do
-przyjęcia hipotez alternatywnych o tym, że krzywe przeżycia dla danych zmiennych różnią się. Dla zmiennej \textsf{meno} p-wartość $0.597$ nie daje podstaw do odrzucenia hipotezy zerowej (dla danego poziomu istnotności), mówiącej o równości krzywych przeżycia dla różnych poziomów tej zmiennej.
+Aby potwierdzić wnioski płynące z graficznej prezentacji krzywych przeżycia, przeprowadzono formalny test logrank dla każdej zmiennej, którego podsumowanie widać w Tabeli 1. Dla zmiennej \textsf{grade} przeprowadzono test logrank dla trendu z racji na naturalne uporządkowanie poziomów. Wartości krytyczne dla zmiennych \textsf{horm}, \textsf{prog}, \textsf{estr} i \textsf{grade}(?), które są mniejsze \text{od zakładanego} poziomu istotności $\alpha=0.05$ dają statystycznie istotne podstawy do odrzucenia hipotez zerowych w testach logrank oraz do
+przyjęcia hipotez alternatywnych o tym, że krzywe przeżycia dla danych zmiennych różnią się. Dla zmiennej \textsf{meno} p-wartość $0.597$ nie daje podstaw \text{do odrzucenia} hipotezy zerowej (dla danego poziomu istnotności), mówiącej o równości krzywych przeżycia dla różnych poziomów tej zmiennej.
 
 ```{r, echo=FALSE, eval=FALSE}
 model <- coxph(Surv(rectime,censrec)~horm+prog+estr+grade+strata(meno)+log(size)+log(nodes), data = dane) 
@@ -157,7 +155,7 @@ knitr::kable( round(x$table, digits = 3), format="latex")
 ```
 \newpage
 \textbf{Przekształcenia zmiennych ciągłych.} \newline
-W celu sprawdzenia, czy zmienne ciągłe nie powinny zostać przekształcone przed wprowadzeniem ich do modelu, wykonujemy wykresy reszt martyngałowych pustego modelu od każdej z tych zmiennych. Wykresy umieszczone na Rysunku 3 sugerują przekształcenie zmiennych poprzez logarytm, więc dla potwierdzenia naszych przypuszczeń rysujmy jeszcze wykresy reszt od logarytmów zmiennych i obserwujemy, że wykresy są teraz bliższe liniowym. Wprowadzamy więc do modelu zmienne ciągłe przekształcone logarytmem.
+W celu sprawdzenia, czy zmienne ciągłe nie powinny zostać przekształcone przed wprowadzeniem ich \text{do modelu}, wykonano wykresy reszt martyngałowych pustego modelu od każdej z tych zmiennych. Wykresy umieszczone na Rysunku 3 sugerują przekształcenie zmiennych poprzez logarytm, więc dla potwierdzenia tych przypuszczeń narysowano jeszcze wykresy reszt od logarytmów zmiennych i zaobserwowano, że wykresy są teraz bliższe liniowym. Wprowadzono więc do modelu zmienne ciągłe przekształcone logarytmem.
 ```{r, echo=FALSE, results='hide', cache=TRUE}
 pdf( file = "log_size.pdf", onefile=FALSE)
 
@@ -213,11 +211,9 @@ GLOBAL & NA & 9.599 & 0.143\\  \bottomrule
 \end{wraptable}
 \textbf{Sprawdzenie założeń - formalny test Schoenfelda.} \newline
 W celu formalnego sprawdzenia czy współczynniki w modelu są stałe w czasie przeprowadzono
-test Schoenfelda, którego globlna p-wartość oraz pojedyncze p-wartości dla zmiennych dyskretnych
-oraz ciągłych przekształconych przez logarytm są większe od zakładanego poziomu istotności $\alpha=0.05$ co
-nie daje podstaw do odrzucenia hipotezy zerowej w tym teście, mówiącej o stałości współczynników w czasie.
+test Schoenfelda, którego globalna p-wartość oraz pojedyncze p-wartości dla zmiennych dyskretnych oraz ciągłych przekształconych przez logarytm są większe \text{od zakładanego} poziomu istotności $\alpha=0.05$ co nie daje podstaw \text{do odrzucenia} hipotezy zerowej w tym teście, mówiącej \text{o stałości} współczynników w czasie.
 
-Przyjrzyjmy się również wykresom skalowanych reszt Schoenfelda dla każdej zmiennej w modelu od czasu i dopasujmy krzywe do \textcolor{red}{danych}?. Dołączone granice dla 95\% obszarów ufności nie dają podstawy do odrzucenia hipotez, że krzywe nie różnią się od horyzontalnych.  
+Przyjrzano się również wykresom skalowanych reszt Schoenfelda dla każdej zmiennej w modelu od czasu i dopasowano krzywe do \textcolor{red}{danych}?. Dołączone granice dla 95\% obszarów ufności nie dają podstawy do odrzucenia hipotez, że krzywe nie różnią się od horyzontalnych.  
 ```{r, echo=FALSE, results='hide', eval=FALSE}
 pdf( file = "skal_res_shen.pdf", onefile=FALSE)
 
@@ -250,7 +246,7 @@ W stworzonym modelu zmiennymi istotnymi statystycznie na poziomie istotności $0
 
 \newpage
 \textbf{Sprawdzenie dopasowania modelu proporcjonalnych hazardów.} \newline
-W celu sprawdzenia dopasowania modelu rysujemy wykresy reszt dewiancji/martyngałowych od liniowej kombinacji zmiennych/indeksów. Na żadnym z wykresów nie można wskazać wyraźnie odstających reszt (\textcolor{red}{a wykres d?}). Wykres reszt dewiancji od indeksów można uznać za symetryczny, pozostałe niekoniecznie, co sugeruje, że dopasowany model nie jest perfekcyjny. 
+W celu sprawdzenia dopasowania modelu wygenerowano wykresy reszt dewiancji/martyngałowych od liniowej kombinacji zmiennych/indeksów. Na żadnym z wykresów nie można wskazać wyraźnie odstających reszt (\textcolor{red}{a wykres d?}). Wykres reszt dewiancji od indeksów można uznać za symetryczny, pozostałe niekoniecznie, \text{co sugeruje}, że dopasowany model nie jest perfekcyjny. 
 
 
 ```{r, echo=FALSE, results='hide', eval=FALSE}
