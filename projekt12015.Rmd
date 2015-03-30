@@ -138,7 +138,7 @@ cat(c("prog","49.3","1","0.000"), sep="&")
 cat(c("\\\\ "))
 cat(c("estr","14.3","1","0.000"), sep="&")
 cat(c("\\\\ "))
-cat(c("grade","","2",""), sep="&")
+cat(c("grade","44.5","2","0.000"), sep="&")
 cat(c("\\\\ ","\\bottomrule"))
 ```
 \end{tabular}
