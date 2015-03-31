@@ -161,7 +161,7 @@ przeżycia, przeprowadzono formalny test logrank dla każdej zmiennej,
 którego podsumowanie widać w Tabeli 1. Dla zmiennej \textsf{grade} przeprowadzono
 test logrank dla trendu z racji na naturalne uporządkowanie poziomów. Hipoteza zerowa zakłada, że krzywe przeżycia dla zmiennych nie różnią się istotnie statystycznie.
 Wartości krytyczne dla zmiennych \textsf{horm}, \textsf{prog},
-\textsf{estr} i \textsf{grade} \textbf{ (?-nie widzę p-wartości dla tej zmiennej :( }), które są mniejsze od zakładanego
+\textsf{estr} i \textsf{grade}, które są mniejsze od zakładanego
 poziomu istotności \(\alpha=0.05\) dają statystycznie istotne podstawy
 do odrzucenia hipotez zerowych w testach logrank oraz do przyjęcia
 hipotez alternatywnych o tym, że krzywe przeżycia dla tych zmiennych
