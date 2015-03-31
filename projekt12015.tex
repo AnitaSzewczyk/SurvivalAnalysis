@@ -119,16 +119,16 @@
 
 \thispagestyle{fancy}
 
-Pod analizę poddano 686 pacjentek cierpiących na raka piersi. Za cel
-analizy postawiono pytanie, które zmienne mają wpływ na czas przeżycia
-bez nawrotu choroby. Zaproponowano model
+Analizie poddano 686 pacjentek cierpiących na raka piersi. Za głowny cel
+postawiono pytanie, które zmienne mają wpływ na czas przeżycia
+bez nawrotu choroby. Proponujemy model
 \text{proporcjonalnych hazardów (PH).}
 
-\textbf{Sprawdzenie założeń - krzywe przeżycia i ich transformacje.}
+\textbf{Sprawdzenie założeń - krzywe przeżycia oraz ich transformacje.}
 \newline
-Sprawdzono spełnianie założeń modelu dla każdej ze zmiennych (poza
-ciągłymi) poprzez narysowanie krzywych Kaplana-Meiera (Rysunek 1) oraz
-wykresów transformacji \text{\textsf{log(-log)}} krzywych przeżycia
+Dla każdej ze zmiennych (poza
+ciągłymi) sprawdzono spełnienie założeń poprzez narysowanie krzywych Kaplana-Meiera (Rysunek 1) oraz
+wykresów transformacji \text{\textsf{log(-log)}} krzywych przeżycia 
 \text{(Rysunek 2).}
 
 \begin{figure}[hbt!]
@@ -171,12 +171,12 @@ wykresów transformacji \text{\textsf{log(-log)}} krzywych przeżycia
 
 \end{figure}
 
-Krzywe przeżycia dla różnych poziomów zmiennej \texttt{meno} przecinają
-się, co oznacza niespełnianie założeń modelu PH. Dla pozostałych
-zmiennych krzywe nie przecinają się oraz wykresy transformacji można
-uznać za nieodstające od równoległych. Z tej racji zaproponowano model
+Krzywe przeżycia dla rożnych poziomów zmiennej \texttt{meno} przecinają
+się, co może oznaczać niespełnianie założeń modelu PH. Dla pozostałych
+zmiennych krzywe nie przecinają się oraz wykresy transformacji możemy
+uznać za nieodstające od równoległych. Z tej racji proponujemy model
 proporcjonalnych hazardów warstwowany względem zmiennej \texttt{meno},
-gdyż nie ma podstaw by nie twierdzić, że założenia modelu PH nie są
+gdyż nie ma podstaw by nie twierdzić, że założenia modelu ph nie są
 spełnione.
 
 \begin{wraptable}{r}{6.8cm}
@@ -184,34 +184,33 @@ spełnione.
 \caption{ Wyniki testów logrank. }
 \begin{tabular}{lrrrrrr}
 \toprule%
-\ &$\chi^2$&St. swobody&p-wartość\\ \toprule meno&0.3&1&0.597\\ horm&8.6&1&0.003\\ prog&49.3&1&0.000\\ estr&14.3&1&0.000\\ grade&44.5&2&0.000\\  \bottomrule
+\ &$\chi^2$&St. swobody&p-wartość\\ \toprule meno&0.3&1&0.597\\ horm&8.6&1&0.003\\ prog&49.3&1&0.000\\ estr&14.3&1&0.000\\ grade&&2&\\  \bottomrule
 \end{tabular}
 \vspace{-7.5pt}
 \end{wraptable}
 
-Aby potwierdzić wnioski płynące z graficznej prezentacji krzywych
+W celu potwierdzenia wniosków płynących z graficznej prezentacji krzywych
 przeżycia, przeprowadzono formalny test logrank dla każdej zmiennej,
-którego podsumowanie widać w Tabeli 1. Dla zmiennej \textsf{grade}
-przeprowadzono test logrank dla trendu z racji na naturalne
-uporządkowanie poziomów. Wartości krytyczne dla zmiennych \textsf{horm},
-\textsf{prog}, \textsf{estr} i \textsf{grade}(?), które są mniejsze
-\text{od zakładanego} poziomu istotności \(\alpha=0.05\) dają
-statystycznie istotne podstawy do odrzucenia hipotez zerowych w testach
-logrank oraz do przyjęcia hipotez alternatywnych o tym, że krzywe
-przeżycia dla danych zmiennych różnią się. Dla zmiennej \textsf{meno}
-p-wartość \(0.597\) nie daje podstaw \text{do odrzucenia} hipotezy
-zerowej (dla danego poziomu istnotności), mówiącej o równości krzywych
-przeżycia dla różnych poziomów tej zmiennej.
+którego podsumowanie widać w Tabeli 1. Dla zmiennej grade przeprowadzono
+test logrank dla trendu z racji na naturalne uporządkowanie poziomów. Hipoteza zerowa zakłada, że krzywe przeżycia dla zmiennych nie różnią się istotnie statystycznie.
+Wartości krytyczne dla zmiennych \textsf{horm}, \textsf{prog},
+\textsf{estr} i \textsf{grade} \textbf{ (?-nie widzę p-wartości dla tej zmiennej :( }), które są mniejsze od zakładanego
+poziomu istotności \(\alpha=0.05\) dają statystycznie istotne podstawy
+do odrzucenia hipotez zerowych w testach logrank oraz do przyjęcia
+hipotez alternatywnych o tym, że krzywe przeżycia dla tych zmiennych
+różnią się. Dla zmiennej \textsf{meno} p-wartość \(0.597\) nie daje
+podstaw do odrzucenia hipotezy zerowej (dla przyjętego poziomu istnotności \(\alpha=0.05\), mówiącej o równości krzywych przeżycia dla różnych poziomów tej
+zmiennej.
 
 \newpage
 \textbf{Przekształcenia zmiennych ciągłych.} \newline
 W celu sprawdzenia, czy zmienne ciągłe nie powinny zostać przekształcone
-przed wprowadzeniem ich \text{do modelu}, wykonano wykresy reszt
+przed wprowadzeniem ich do modelu, wykonujemy wykresy reszt
 martyngałowych pustego modelu od każdej z tych zmiennych. Wykresy
 umieszczone na Rysunku 3 sugerują przekształcenie zmiennych poprzez
-logarytm, więc dla potwierdzenia tych przypuszczeń narysowano jeszcze
-wykresy reszt od logarytmów zmiennych i zaobserwowano, że wykresy są
-teraz bliższe liniowym. Wprowadzono więc do modelu zmienne ciągłe
+logarytm, więc dla potwierdzenia tych przypuszczeń narysowano dodatkowo 
+wykresy reszt od logarytmów zmiennych i zaobserwowano, że wykresy są teraz
+bliższe liniowym. Wprowadzono więc do modelu zmienne ciągłe
 przekształcone logarytmem.
 
 \begin{figure}[hbt!]
@@ -235,39 +234,33 @@ przekształcone logarytmem.
 \toprule%
   & $\rho$ & $\chi^2$ & p-wartość\\ \toprule 
 
-horm & -0.009 & 0.024 & 0.876\\
+horm & -0.008 & 0.019 & 0.891\\
 
-prog & 0.036 & 0.369 & 0.543\\
+prog & 0.036 & 0.376 & 0.540\\
 
-estr & 0.071 & 1.458 & 0.227\\
+estr & 0.071 & 1.483 & 0.223\\
 
-as.factor(grade)2 & -0.052 & 0.811 & 0.368\\
+grade & -0.083 & 1.826 & 0.177\\
 
-as.factor(grade)3 & -0.089 & 2.347 & 0.126\\
+log(size) & 0.008 & 0.020 & 0.888\\
 
-log(size) & 0.011 & 0.037 & 0.848\\
+log(nodes) & -0.049 & 0.799 & 0.372\\
 
-log(nodes) & -0.051 & 0.879 & 0.349\\
-
-GLOBAL & NA & 11.322 & 0.125\\  \bottomrule
+GLOBAL & NA & 9.599 & 0.143\\  \bottomrule
 \end{tabular}
 \vspace{-7.5pt}
 \end{wraptable}
 
 \textbf{Sprawdzenie założeń - formalny test Schoenfelda.} \newline
 W celu formalnego sprawdzenia czy współczynniki w modelu są stałe w
-czasie przeprowadzono test Schoenfelda, którego globalna p-wartość oraz
+czasie przeprowadzono test Schoenfelda, którego globlna p-wartość oraz
 pojedyncze p-wartości dla zmiennych dyskretnych oraz ciągłych
-przekształconych przez logarytm są większe \text{od zakładanego} poziomu
-istotności \(\alpha=0.05\) co nie daje podstaw \text{do odrzucenia}
-hipotezy zerowej w tym teście, mówiącej \text{o stałości} współczynników
-w czasie.
+przekształconych przez logarytm są większe od zakładanego poziomu
+istotności \(\alpha=0.05\) co nie daje podstaw do odrzucenia hipotezy
+zerowej w tym teście, mówiącej o stałości współczynników w czasie.
 
-Przyjrzano się również wykresom skalowanych reszt Schoenfelda dla każdej
-zmiennej w modelu od czasu i dopasowano krzywe do
-\textcolor{red}{danych}?. Dołączone granice dla 95\% obszarów ufności
-nie dają podstawy do odrzucenia hipotez, że krzywe nie różnią się od
-horyzontalnych.
+Uwagę zwrócono również wykresom skalowanych reszt Schoenfelda dla
+każdej zmiennej w modelu od czasu i dopasowano do nich krzywe. Dołączone granice dla 95\% obszarów ufności sugerują, że nie ma podstaw do odrzucenia hipotez, że krzywe nie różnią się od horyzontalnych.
 
 \begin{figure}[hbt!]
 \vspace{-10pt}
@@ -284,7 +277,7 @@ sugerują odstępstw od założenia PH.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{model <-}\StringTok{ }\KeywordTok{coxph}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(rectime,censrec)~horm+prog+estr+}\KeywordTok{as.factor}\NormalTok{(grade)+}\KeywordTok{strata}\NormalTok{(meno)+}\KeywordTok{log}\NormalTok{(size)+}\KeywordTok{log}\NormalTok{(nodes), }
+\NormalTok{model <-}\StringTok{ }\KeywordTok{coxph}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(rectime,censrec)~horm+prog+estr+grade+}\KeywordTok{strata}\NormalTok{(meno)+}\KeywordTok{log}\NormalTok{(size)+}\KeywordTok{log}\NormalTok{(nodes), }
                \DataTypeTok{data =} \NormalTok{dane) }
 \KeywordTok{summary}\NormalTok{(model)}
 \end{Highlighting}
@@ -293,63 +286,58 @@ sugerują odstępstw od założenia PH.
 \begin{verbatim}
 Call:
 coxph(formula = Surv(rectime, censrec) ~ horm + prog + estr + 
-    as.factor(grade) + strata(meno) + log(size) + log(nodes), 
-    data = dane)
+    grade + strata(meno) + log(size) + log(nodes), data = dane)
 
   n= 686, number of events= 299 
 
-                      coef exp(coef) se(coef)      z Pr(>|z|)    
-horm              -0.40288   0.66839  0.12924 -3.117  0.00183 ** 
-prog              -0.67857   0.50734  0.14434 -4.701 2.59e-06 ***
-estr               0.03400   1.03458  0.14314  0.238  0.81226    
-as.factor(grade)2  0.50378   1.65497  0.25275  1.993  0.04624 *  
-as.factor(grade)3  0.52144   1.68445  0.27898  1.869  0.06161 .  
-log(size)          0.20252   1.22449  0.13207  1.533  0.12515    
-log(nodes)         0.47991   1.61593  0.06697  7.166 7.71e-13 ***
+               coef exp(coef) se(coef)      z Pr(>|z|)    
+horm       -0.39218   0.67558  0.12913 -3.037  0.00239 ** 
+prog       -0.69283   0.50016  0.14570 -4.755 1.98e-06 ***
+estr        0.03958   1.04038  0.14379  0.275  0.78309    
+grade       0.15096   1.16295  0.11237  1.343  0.17914    
+log(size)   0.19191   1.21156  0.13175  1.457  0.14523    
+log(nodes)  0.48933   1.63123  0.06690  7.314 2.59e-13 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-                  exp(coef) exp(-coef) lower .95 upper .95
-horm                 0.6684     1.4961    0.5188    0.8611
-prog                 0.5073     1.9711    0.3823    0.6732
-estr                 1.0346     0.9666    0.7815    1.3696
-as.factor(grade)2    1.6550     0.6042    1.0084    2.7160
-as.factor(grade)3    1.6845     0.5937    0.9750    2.9102
-log(size)            1.2245     0.8167    0.9452    1.5862
-log(nodes)           1.6159     0.6188    1.4172    1.8426
+           exp(coef) exp(-coef) lower .95 upper .95
+horm          0.6756     1.4802    0.5245    0.8702
+prog          0.5002     1.9994    0.3759    0.6655
+estr          1.0404     0.9612    0.7849    1.3791
+grade         1.1630     0.8599    0.9331    1.4495
+log(size)     1.2116     0.8254    0.9358    1.5685
+log(nodes)    1.6312     0.6130    1.4308    1.8598
 
-Concordance= 0.697  (se = 0.025 )
-Rsquare= 0.172   (max possible= 0.99 )
-Likelihood ratio test= 129.7  on 7 df,   p=0
-Wald test            = 128.6  on 7 df,   p=0
-Score (logrank) test = 136.5  on 7 df,   p=0
+Concordance= 0.696  (se = 0.025 )
+Rsquare= 0.169   (max possible= 0.99 )
+Likelihood ratio test= 126.9  on 6 df,   p=0
+Wald test            = 128.6  on 6 df,   p=0
+Score (logrank) test = 135.3  on 6 df,   p=0
 \end{verbatim}
 
 W stworzonym modelu zmiennymi istotnymi statystycznie na poziomie
 istotności \(0.05\) są: \texttt{horm}, \texttt{prog},
-\texttt{as.factor(grade)2}, log(\texttt{nodes}). Współczynniki modelu
-przy tych zmiennych wynoszą odpowiednio: \(-0.40, -0.67, 0.50, 0.47\).
-Oznacza to, że jeśli została użyta terapia hormonalna, to hazard zgonu
-lub nawrotu choroby zmienia się \(\exp(-0.40)=0.66\) raza w stosunku do
-nieużycia terapii hormonalnej (gdy wszystkie inne zmienne są takie
-same). Jeśli wskaźnik receptorów progesteronu zmienia się z ujemnego na
-dodatni, to hazard zmieni się o \(\exp(-0.67)=0.5\) raza, natomiast gdy
-logarytm liczby węzłów chłonnych z przerzutami nowotworu wzrośnie o 1,
-to hazard zwiększy się \(\exp(0.47)=1.61\) raza. Zmiana z grade (stopień
-zróżnicowania komórek nowotworu (1--wysoki, 2--średni) z 1 do 2 zwiększa
-hazard \(\exp(0.5)=1.65\) raza.
+log(\texttt{nodes}). Współczynniki modelu przy tych zmiennych wynoszą
+odpowiednio: \(-0.39, -0.69, 0.49\). Oznacza to, że jeśli została użyta
+terapia hormonalna, to hazard zgonu lub nawrotu choroby zmniejsza się
+\(\exp(-0.39)=0.68\) raza w stosunku nieużycia terapii hormonalnej
+(gdy wszystkie inne zmienne są takie same). Jeśli wskaźnik receptorów
+progesteronu zmienia się z ujemnego na dodatni, to hazard zmieni się o
+\(\exp(-0.69)=0.5\) raza, natomiast gdy logarytm liczby węzłów chłonnych
+z przerzutami nowotworu wzrośnie o 1, to hazard zwiększy się
+\(\exp(0.49)=1.63\) raza, gdy wszystkie inne zmienne pozostaną na tym samym poziomie.
 
-\textcolor{red}{Testy Likelihood, Wald i Score dają p-wartość mniejszą od 0.05, co oznacza, że odrzucamy hipotezę o tym, że model pusty jest równie dobrze dopasowany jak dopasowany model na korzyść hipotezy, że dopasowany model jest od niego lepszy. <- poprawić.}
+Testy Likelihood, Wald i Score dają p-wartość mniejszą od 0.05 (przyjętego poziomu istotności), co wskazuje, że odrzucamy hipotezę zerową na rzecz hipotezy alternatywnej, zatem dopasowany model jest istotnie lepszy od modelu pustego. 
 
 \newpage
 \textbf{Sprawdzenie dopasowania modelu proporcjonalnych hazardów.}
 \newline
-W celu sprawdzenia dopasowania modelu wygenerowano wykresy reszt
-dewiancji/martyngałowych od liniowej kombinacji zmiennych/indeksów. Na
-niektórych wykresach można wskazać wyraźnie odstające reszty. Wykres
-reszt dewiancji od indeksów można uznać za symetryczny, pozostałe
-niekoniecznie, \text{co sugeruje}, że dopasowany model nie jest
-perfekcyjny.
+W celu sprawdzenia dopasowania modelu narysowano wykresy reszt
+dewiancji i martyngałowych od liniowej kombinacji zmiennych oraz indeksów. Na
+żadnym z wykresów nie można wskazać wyraźnie odstających reszt
+(\textcolor{red}{a wykres d?}). Wykres reszt dewiancji od indeksów można
+uznać za symetryczny, pozostałe niekoniecznie, co sugeruje, że
+dopasowany model nie jest perfekcyjny.
 
 \begin{figure}[hbt!]
   \vspace{-10pt}
