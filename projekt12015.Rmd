@@ -148,7 +148,7 @@ cat(c("prog","49.3","1","0.000"), sep="&")
 cat(c("\\\\ "))
 cat(c("estr","14.3","1","0.000"), sep="&")
 cat(c("\\\\ "))
-cat(c("grade","","2",""), sep="&")
+cat(c("grade","44.5","2","0.000"), sep="&")
 cat(c("\\\\ ","\\bottomrule"))
 ```
 \end{tabular}
@@ -178,10 +178,10 @@ knitr::kable( round(x$table, digits = 3), format="latex")
 \textbf{Przekształcenia zmiennych ciągłych.} \newline
 W celu sprawdzenia, czy zmienne ciągłe nie powinny zostać przekształcone
 przed wprowadzeniem ich do modelu, wykonano wykresy reszt
-martyngałowych pustego modelu od każdej z tych zmiennych. Wykresy 
-sugerowały przekształcenie zmiennych poprzez
+martyngałowych pustego modelu od każdej z tych zmiennych. Wykresy
+umieszczone na Rysunku 3 sugerują przekształcenie zmiennych poprzez
 logarytm, więc dla potwierdzenia tych przypuszczeń narysowano dodatkowo 
-wykresy reszt od logarytmów zmiennych (Rysunek 3) i zaobserwowano, że wykresy są teraz
+wykresy reszt od logarytmów zmiennych i zaobserwowano, że wykresy są teraz
 bliższe liniowym. Wprowadzono więc do modelu zmienne ciągłe
 przekształcone logarytmem.
 ```{r, echo=FALSE, results='hide', cache=TRUE}
@@ -244,14 +244,11 @@ dev.off()
 W celu formalnego sprawdzenia czy współczynniki w modelu są stałe w
 czasie przeprowadzono test Schoenfelda, którego globlna p-wartość oraz
 pojedyncze p-wartości dla zmiennych dyskretnych oraz ciągłych
-przekształconych przez logarytm są większe od z\text{od zakładanego} poziomu istotności $\alpha=0.05$,
-co nie daje podstaw do odrzucenia hipotezy
+przekształconych przez logarytm są większe od z\text{od zakładanego} poziomu istotności $\alpha=0.05$ co nie daje podstaw do odrzucenia hipotezy
 zerowej w tym teście, mówiącej o stałości współczynników w czasie.
 
 Uwagę zwrócono również wykresom skalowanych reszt Schoenfelda dla
-każdej zmiennej w modelu od czasu i dopasowano do nich krzywe. 
-Dołączone granice dla 95\% obszarów ufności sugerują, że nie ma podstaw do odrzucenia hipotez, 
-że krzywe nie różnią się od horyzontalnych.
+każdej zmiennej w modelu od czasu i dopasowano do nich krzywe. Dołączone granice dla 95\% obszarów ufności sugerują, że nie ma podstaw do odrzucenia hipotez, że krzywe nie różnią się od horyzontalnych.
 ```{r, echo=FALSE, results='hide', eval=FALSE}
 pdf( file = "skal_res_shen.pdf", onefile=FALSE)
 
@@ -280,23 +277,12 @@ summary(model)
 ```
 
 W stworzonym modelu zmiennymi istotnymi statystycznie na poziomie
-istotności \(0.05\) są:  \texttt{horm}, \texttt{prog}, \texttt{as.factor(grade)2}, log(\texttt{nodes}). 
-Współczynniki modelu przy tych zmiennych wynoszą odpowiednio: $-0.40, -0.67, 0.50, 0.47$. 
-Oznacza to, że jeśli została użyta terapia hormonalna, to hazard zgonu lub nawrotu choroby 
-zminiejsza się $\exp(-0.40)=0.66$ raza w stosunku do nieużycia terapii hormonalnej (gdy wszystkie inne zmienne są takie same).
-Jeśli wskaźnik receptorów progesteronu zmienia się z ujemnego na dodatni, to hazard zmieni się 
-o $\exp(-0.67)=0.5$ raza, natomiast gdy logarytm liczby węzłów chłonnych z przerzutami nowotworu 
-wzrośnie o 1, to hazard zwiększy się $\exp(0.47)=1.61$ raza. Zmiana z grade (stopień zróżnicowania komórek nowotworu 
-(1–wysoki, 2–średni) z 1 do 2 zwiększa hazard $\exp(0.5)=1.65$ raza, gdy wszystkie inne zmienne pozostaną na tym samym poziomie.
+istotności \(0.05\) są:  \texttt{horm}, \texttt{prog}, \texttt{as.factor(grade)2}, log(\texttt{nodes}). Współczynniki modelu przy tych zmiennych wynoszą odpowiednio: $-0.40, -0.67, 0.50, 0.47$. Oznacza to, że jeśli została użyta terapia hormonalna, to hazard zgonu lub nawrotu choroby zminiejsza się $\exp(-0.40)=0.66$ raza w stosunku do nieużycia terapii hormonalnej (gdy wszystkie inne zmienne są takie same). Jeśli wskaźnik receptorów progesteronu zmienia się z ujemnego na dodatni, to hazard zmieni się o $\exp(-0.67)=0.5$ raza, natomiast gdy logarytm liczby węzłów chłonnych z przerzutami nowotworu wzrośnie o 1, to hazard zwiększy się $\exp(0.47)=1.61$ raza. Zmiana z grade (stopień zróżnicowania komórek nowotworu (1–wysoki, 2–średni) z 1 do 2 zwiększa hazard $\exp(0.5)=1.65$ raza, gdy wszystkie inne zmienne pozostaną na tym samym poziomie.
 
-Testy Likelihood, Wald i Score dają p-wartość mniejszą od 0.05 (przyjętego poziomu istotności), co wskazuje, że 
-odrzucamy hipotezę zerową na rzecz hipotezy alternatywnej, zatem dopasowany model jest istotnie lepszy od modelu pustego.
+Testy Likelihood, Wald i Score dają p-wartość mniejszą od 0.05 (przyjętego poziomu istotności), co wskazuje, że odrzucamy hipotezę zerową na rzecz hipotezy alternatywnej, zatem dopasowany model jest istotnie lepszy od modelu pustego.
 \newpage
 \textbf{Sprawdzenie dopasowania modelu proporcjonalnych hazardów.} \newline
-W celu sprawdzenia dopasowania modelu wygenerowano wykresy reszt dewiancji/martyngałowych od liniowej 
-kombinacji zmiennych/indeksów. Na niektórych wykresach można wskazać wyraźnie odstające reszty. 
-Wykres reszt dewiancji od indeksów można uznać za symetryczny, pozostałe niekoniecznie, 
-\text{co sugeruje}, że dopasowany model nie jest perfekcyjny.
+W celu sprawdzenia dopasowania modelu wygenerowano wykresy reszt dewiancji/martyngałowych od liniowej kombinacji zmiennych/indeksów. Na niektórych wykresach można wskazać wyraźnie odstające reszty. Wykres reszt dewiancji od indeksów można uznać za symetryczny, pozostałe niekoniecznie, \text{co sugeruje}, że dopasowany model nie jest perfekcyjny.
 
 
 ```{r, echo=FALSE, results='hide', eval=FALSE}
