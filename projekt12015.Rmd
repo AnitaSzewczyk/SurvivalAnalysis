@@ -12,7 +12,7 @@ output:
 
 ```{r, echo=FALSE}
 library(knitr)
-opts_chunk$set(comment="", message=FALSE,tidy.opts=list(keep.blank.line=TRUE, width.cutoff=120),options(width=120), cache=TRUE,fig.align='center',fig.height=6, fig.width=10,fig.path='figure/beamer-',fig.show='hold',size='footnotesize', cache=FALSE)
+opts_chunk$set(comment="", message=FALSE, warning=FALSE, tidy.opts=list(keep.blank.line=TRUE, width.cutoff=120),options(width=120), cache=TRUE,fig.align='center',fig.height=6, fig.width=10,fig.path='figure/beamer-',fig.show='hold',size='footnotesize', cache=FALSE)
 ```
 
 \thispagestyle{fancy}
@@ -178,10 +178,9 @@ knitr::kable( round(x$table, digits = 3), format="latex")
 \textbf{Przekształcenia zmiennych ciągłych.} \newline
 W celu sprawdzenia, czy zmienne ciągłe nie powinny zostać przekształcone
 przed wprowadzeniem ich do modelu, wykonano wykresy reszt
-martyngałowych pustego modelu od każdej z tych zmiennych. Wykresy
-umieszczone na Rysunku 3 sugerują przekształcenie zmiennych poprzez
+martyngałowych pustego modelu od każdej z tych zmiennych. Otrzymane wykresy sugerują przekształcenie zmiennych poprzez
 logarytm, więc dla potwierdzenia tych przypuszczeń narysowano dodatkowo 
-wykresy reszt od logarytmów zmiennych i zaobserwowano, że wykresy są teraz
+wykresy reszt od logarytmów zmiennych (Rysunek 3) i zaobserwowano, że wykresy są teraz
 bliższe liniowym. Wprowadzono więc do modelu zmienne ciągłe
 przekształcone logarytmem.
 ```{r, echo=FALSE, results='hide', cache=TRUE}
@@ -242,12 +241,12 @@ dev.off()
 
 \textbf{Sprawdzenie założeń - formalny test Schoenfelda.} \newline
 W celu formalnego sprawdzenia czy współczynniki w modelu są stałe w
-czasie przeprowadzono test Schoenfelda, którego globlna p-wartość oraz
+czasie przeprowadzono test Schoenfelda, którego globalna p-wartość oraz
 pojedyncze p-wartości dla zmiennych dyskretnych oraz ciągłych
-przekształconych przez logarytm są większe od z\text{od zakładanego} poziomu istotności $\alpha=0.05$ co nie daje podstaw do odrzucenia hipotezy
+przekształconych przez logarytm są większe \text{od zakładanego} poziomu istotności $\alpha=0.05$ co nie daje podstaw do odrzucenia hipotezy
 zerowej w tym teście, mówiącej o stałości współczynników w czasie.
 
-Uwagę zwrócono również wykresom skalowanych reszt Schoenfelda dla
+Uwagę zwrócono również na wykresy skalowanych reszt Schoenfelda dla
 każdej zmiennej w modelu od czasu i dopasowano do nich krzywe. Dołączone granice dla 95\% obszarów ufności sugerują, że nie ma podstaw do odrzucenia hipotez, że krzywe nie różnią się od horyzontalnych.
 ```{r, echo=FALSE, results='hide', eval=FALSE}
 pdf( file = "skal_res_shen.pdf", onefile=FALSE)
