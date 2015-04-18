@@ -40,7 +40,9 @@ co oznacza, że istotność statystyczna tej zmiennej jest sprawdzana w przypadk
 oraz poziom referencyjny (grade=1) vs grade = 3. Wartoś krytyczna testu dla pierwszego porównania jest mniejsza od 0.05 
 (zakładanego poziomu istotności) zatem uznajemy, że hazard dla pacjentów z grade1 różni się istotnie statystycznie od pacjentów mających grade2
 o czym piszemy w pierwszym zdaniu pod podsumowaniem modelu: "W stworzonym modelu zmiennymi istotnymi statystycznie na poziomie istotnosci 0.05 sa: horm, prog,
-as.factor(grade)2, log(nodes)." . Zdajemy sobie sprawę, że może to być zbyt duży skrót myślowy, jednak
+as.factor(grade)2, log(nodes)." i w zdaniu kończcym ten akapit: "Zmiana z grade (stopień zróżnicowania komórek nowotworu (1–wysoki, 2–średni) z 1 do 2 zwiększa 
+hazard $\exp(0.5)=1.65$ raza, gdy wszystkie inne zmienne pozostaną na tym samym poziomie."
+Zdajemy sobie sprawę, że może to być zbyt duży skrót myślowy, jednak
 mieliśmy nadzieję, że nie musimy być aż tak drobiazgowi i zakładaliśmy pewną dopuszczalną znajomość tematu.
 Dlatego chociażby nie piszemy jak estymuje się krzywe przeżycia metodą Kaplana-Meiera.
 
