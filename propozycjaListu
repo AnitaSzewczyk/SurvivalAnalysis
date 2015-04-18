@@ -1,0 +1,47 @@
+Szanowny Panie Profesorze,
+
+Otrzymaliśmy pierwszą pracę domową z Biostatystyki wraz z oceną i Pańskim komentarzem
+od profesora Grzegorzewskiego.
+
+Ponieważ nie mieliśmy szansy porozmawiać osobiście, pozwolilismy sobie napisać do Pana wiadomość,
+aby rozwiać nasze wątpliwości w sprawie pracy domowej.
+
+1) Na wstępie chcieliśmy podkreślić, że na stronie pierwszej naszego raportu pod wykresami 
+transformacji log(-log) krzywych przeżycia umieścilismy zdanie
+
+"Krzywe przezycia dla róznych poziomów zmiennej meno przecinaja sie, co oznacza niespełnianie załozen
+modelu PH. Dla pozostałych zmiennych krzywe nie przecinaja sie oraz wykresy transformacji mozna uznac
+za nieodstajace od równoległych. *Z tej racji zaproponowano model proporcjonalnych hazardów warstwowany
+wzgledem zmiennej meno, gdyz nie ma podstaw by nie twierdzic, ze załozenia modelu PH nie sa spełnione.*"
+   
+gdzie zaznaczamy, że proponujemy model warstwowany ze względu na zmienną meno, gdyż nie są spełnione
+dla niej założenia proporcjonalnych hazardów, gdyż oszacowane krzywe przeżycią się przecinają
+dla dwóch poziomów tej zmiennej.
+
+
+2) Na stronie drugiej przy wykres Pana pierwszy komentarz sugeruje, aby wyrysować
+wykresy reszt martyngałowych po transformacji log(size) ale te wykres to właśnie
+są już wykres po tej transformacji, o czym mówi podpis pod wykresem: 
+   Rysunek 3: Wykresy reszt martyngałowych od logarytmów zmiennych ciagłych.
+
+
+3) Na stronie drugiej Pański drugi komentarz dotyczy braku zmiennej meno w wynikach testu Schoenfelda.
+Ponieważ ta zmienna nie spełniała założeń PH, to zaproponowaliśmy model warstwowy ze względu
+na tą zmienną, zatem wydaje nam się, że ciężko jest sprawdzić hipotezę o stałości współczynnika
+dla tej zmiennej w czasie, skoro tej zmiennej w modelu nie ma. Jeżeli źle nam się wydaje, to czy moglibyśmy
+prosić o sprostowanie.
+
+4) Na stronie trzeciej Pański pierwszy komentarz to pytanie dlaczego warstwujemy. Jest to właśnie
+opisane na 1 stronie raportu.
+
+5) Na stronie trzeciej Pański drugi komentarz to pytanie o to, czy zmienna grade ma statystycznie
+istotny wpływ. Ta zmienna została wprowadzona do modelu jako zmienna czynnikowa (w kodzie as.factor(grade))
+co oznacza, że istotność statystyczna tej zmiennej jest sprawdzana w przypadkach poziom refrenecyjny (grade = 1) vs grade2
+oraz poziom referencyjny (grade=1) vs grade = 3. Wartoś krytyczna testu dla pierwszego porównania jest mniejsza od 0.05 
+(zakładanego poziomu istotności) zatem uznajemy, że hazard dla pacjentów z grade1 różni się istotnie statystycznie od pacjentów mających grade2
+o czym piszemy w pierwszym zdaniu pod podsumowaniem modelu: "W stworzonym modelu zmiennymi istotnymi statystycznie na poziomie istotnosci 0.05 sa: horm, prog,
+as.factor(grade)2, log(nodes)." . Zdajemy sobie sprawę, że może to być zbyt duży skrót myślowy, jednak
+mieliśmy nadzieję, że nie musimy być aż tak drobiazgowi i zakładaliśmy pewną dopuszczalną znajomość tematu.
+Dlatego chociażby nie piszemy jak estymuje się krzywe przeżycia metodą Kaplana-Meiera.
+
+
