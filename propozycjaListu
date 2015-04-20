@@ -22,7 +22,7 @@ dla dwóch poziomów tej zmiennej.
 2) Na stronie drugiej przy wykres Pana pierwszy komentarz sugeruje, aby wyrysować
 wykresy reszt martyngałowych po transformacji log(size) ale te wykres to właśnie
 są już wykres po tej transformacji, o czym mówi podpis pod wykresem: 
-   Rysunek 3: Wykresy reszt martyngałowych od logarytmów zmiennych ciagłych.
+   "Rysunek 3: Wykresy reszt martyngałowych od logarytmów zmiennych ciagłych."
 
 
 3) Na stronie drugiej Pański drugi komentarz dotyczy braku zmiennej meno w wynikach testu Schoenfelda.
@@ -43,7 +43,4 @@ o czym piszemy w pierwszym zdaniu pod podsumowaniem modelu: "W stworzonym modelu
 as.factor(grade)2, log(nodes)." i w zdaniu kończcym ten akapit: "Zmiana z grade (stopień zróżnicowania komórek nowotworu (1–wysoki, 2–średni) z 1 do 2 zwiększa 
 hazard $\exp(0.5)=1.65$ raza, gdy wszystkie inne zmienne pozostaną na tym samym poziomie."
 Zdajemy sobie sprawę, że może to być zbyt duży skrót myślowy, jednak
-mieliśmy nadzieję, że nie musimy być aż tak drobiazgowi i zakładaliśmy pewną dopuszczalną znajomość tematu.
-Dlatego chociażby nie piszemy jak estymuje się krzywe przeżycia metodą Kaplana-Meiera.
-
-
+mieliśmy nadzieję, że nie musimy być aż tak drobiazgowi. Pański komentarz sugeruje, że powinniśmy określić łączną istotność zmiennej grade. My jednak wprowadzając ją do modelu jako czynnikową, uznaliśmy że określamy tylko istotność konkretnego poziomu czynnika względem referencyjnego, co uczyniliśmy. Jeśli jesteśmy w błędzie i mogliśmy określić łączną istotność, to prosimy o wyjaśnienie. 
