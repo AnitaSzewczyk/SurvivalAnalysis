@@ -1,0 +1,87 @@
+---
+title: "Analiza przeżycia"
+output: 
+   pdf_document:
+      includes:
+         in_header: naglowek.tex
+      highlight: pygments
+      toc: false
+      number_sections: false
+      keep_tex: true
+---
+
+```{r, echo=FALSE}
+library(knitr)
+opts_chunk$set(comment="", message=FALSE, warning=FALSE, tidy.opts=list(keep.blank.line=TRUE, width.cutoff=120),options(width=120), cache=TRUE,fig.align='center',fig.height=6, fig.width=10,fig.path='figure/beamer-',fig.show='hold',size='footnotesize', cache=FALSE)
+```
+
+\thispagestyle{fancy}
+\section{Zadanie 1}
+```{r, echo=FALSE}
+library(survival)
+dane <- read.table("C:\\SurvivalAnalysis\\PD3\\reconstitution.dat", header=TRUE, sep=",")
+```
+
+Oceniamy efekt leczenia z uwzględnieniem ,,cielności'' krów z zapaleniem wymienia. Dokonujemy analizy następujących zmiennych:
+\begin{itemize}
+\item cowid -- id krowy
+\item time -- czas do odtworzenia bariery (w dniach)
+\item status -- wskaźnik odtworzenia bariery (0 –- nie, 1 -- tak)
+\item drug -- leczenie (0 –- placebo, 1 -- aktywny lek)
+\item heifer -- wskaźnik „cielności” (0 –- dwa lub więcej cielęta, 1 –- jedno lub
+jałówka)
+\end{itemize}
+
+W związku z tym, że posiadamy po dwa pomiary czasów dla każdej krowy (oddzielnie dla wymion leczonych i nieleczonych), proponujemy model proporcjonalnych hazardów z uwzględnieniem skorelowanych czasów zdarzeń.
+
+```{r, result='asis', echo=FALSE, size='footnotesize'}
+model <- coxph(Surv(Time, Status)~Drug + Heifer + cluster(Cowid), data = dane) 
+summary(model)
+```
+
+Na poziomie istotności $\alpha$ = 0.05 wskaźnik leczenia krów ma istotny wpływ  na szybkość odbudowywania się bariery krew-mleko u krów, natomiast ,,cielność'' nie ma istotnego wpływu. Hazard odtworzenia bariery zwiększa się 1.4 raza przy zastosowaniu leczenia względem podawania placebo. Oznacza to, że czas do odtworzenia bariery krew-mleko jest krótszy w przypadku zastosowania leczenia. 
+% Czy estymator odporny powinien być większy czy mniejszy niż modelowy??
+Jedynie test Walda bierze pod uwagę korelację w danych, zatem na jego podstawie stwierdzamy, że dopasowany przez nas model jest lepszy niż model pusty (p-value w teście Walda wynosi 0.0263).
+
+
+\section{Zadanie 2}
+```{r, echo=FALSE}
+data <- read.table("C:\\SurvivalAnalysis\\PD3\\culling.dat", header=TRUE, sep=",")
+```
+
+Oceniamy czas do brakowania z uwzględnieniem efektu czasu oceny SCC i log(SCC). Dokonujemy analizy następujących zmiennych:
+\begin{itemize}
+\item cowid -- id jałówki
+\item time -- czas do brakowania (w dniach)
+\item status -- wskaźnik brakowania (0 –- nie, 1 -- tak)
+\item herd -- id stada
+\item timeassess -- czas badania laboratoryjnego SCC (w dniach)
+\item logSCC -- logarytm wartosci SCC
+\end{itemize}
+
+W związku z tym, że zasugerowano, iż strategia brakowania jałówek, podobnie jak poziom SCC w mleku, mogą znacząco różnić się pomiędzy stadami, zdecydowaliśmy się na model z podatnościami. 
+
+```{r, result='asis', echo=FALSE, size='footnotesize'}
+frailty <- coxph(Surv(Time, Status)~Timeassess + LogSCC + frailty(Herd), data = data)
+summary(frailty)
+```
+
+Na poziomie istotności $\alpha$ = 0.05, wszystkie zmienne wykorzystane w modelu są istotne statystycznie. Gdy czas wykonania badania laboratoryjnego SCC wzrasta o jeden dzień, to hazard czasu do brakowania jałówki wzrasta 1.002 raza, oznacza to, że im później po ocieleniu zostanie wykonane badanie, tym szybciej jałówka zostanie skazana na brakowanie. Natomiast przy wzroście logarytmu wartości SCC o jeden, hazard czasu do brakowania jałówki wzrasta 1.072 raza. Ponadto istotny wpływ ma róWnież stado, do którego należy jałówka. Wymienione efekty odnoszą się tylko do krów z tego samego stada.
+
+
+
+\newpage
+\textbf{Kody:} 
+```{r, eval=FALSE}
+## Zadanie 1.
+library(survival)
+dane <- read.table("C:\\SurvivalAnalysis\\PD3\\reconstitution.dat", header=TRUE, sep=",")
+model <- coxph(Surv(Time, Status)~Drug + Heifer + cluster(Cowid), data = dane) 
+summary(model)
+
+## Zadanie 2.
+data <- read.table("C:\\SurvivalAnalysis\\PD3\\culling.dat", header=TRUE, sep=",")
+frailty <- coxph(Surv(Time, Status)~Timeassess + LogSCC + frailty(Herd), data = data)
+summary(frailty)
+```
+

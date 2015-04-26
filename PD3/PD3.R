@@ -13,11 +13,11 @@ summary(AG)
 # 
 # coef exp(coef) se(coef) robust se     z Pr(>|z|)  
 # Drug   0.3371    1.4008   0.1577    0.1370 2.460   0.0139 *
-#    Heifer 0.2261    1.2536   0.1703    0.2076 1.089   0.2761  
+# Heifer 0.2261    1.2536   0.1703    0.2076 1.089   0.2761  
 # ---
 #    Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 # 
-# exp(coef) exp(-coef) lower .95 upper .95
+#           exp(coef) exp(-coef) lower .95 upper .95
 # Drug       1.401     0.7139    1.0709     1.832
 # Heifer     1.254     0.7977    0.8346     1.883
 # 

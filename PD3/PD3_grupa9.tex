@@ -1,0 +1,245 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+\newcommand{\RegionMarkerTok}[1]{{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+\newcommand{\NormalTok}[1]{{#1}}
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={},
+            pdftitle={Analiza przeżycia},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{0}
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+\setlength{\droptitle}{-2em}
+  \title{Analiza przeżycia}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{}
+  \preauthor{}\postauthor{}
+  \date{}
+  \predate{}\postdate{}
+
+
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc} 
+%\usepackage[top=1.5cm, bottom=1.5cm, left=0.85cm, right=0.85cm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[RO,LE]{\bfseries \small{P. Auguścik, M. Kosiński, B. Sozańska, A. Szewczyk}}
+\fancyhead[RE,LO]{\bfseries \small{Biostatystyka, Projekt nr 3}}
+\AtBeginDocument{\thispagestyle{fancy}}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{pdflscape}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{amsthm}
+\usepackage{longtable}
+\usepackage{wrapfig,booktabs}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{hyperref} %pakiet do dodawania hiperłącz
+\hypersetup{colorlinks=true,
+            linkcolor=black,
+            citecolor=black,
+            urlcolor=black}
+%\title{\textbf{\LARGE{Biostatystyka - Projekt zaliczeniowy} }}
+
+
+\begin{document}
+
+\maketitle
+
+
+\thispagestyle{fancy} \section{Zadanie 1}
+
+Oceniamy efekt leczenia z uwzględnieniem ,,cielności'' krów z zapaleniem
+wymienia. Dokonujemy analizy następujących zmiennych:
+
+\begin{itemize}
+\item cowid -- id krowy
+\item time -- czas do odtworzenia bariery (w dniach)
+\item status -- wskaźnik odtworzenia bariery (0 –- nie, 1 -- tak)
+\item drug -- leczenie (0 –- placebo, 1 -- aktywny lek)
+\item heifer -- wskaźnik „cielności” (0 –- dwa lub więcej cielęta, 1 –- jedno lub
+jałówka)
+\end{itemize}
+
+W związku z tym, że posiadamy po dwa pomiary czasów dla każdej krowy
+(oddzielnie dla wymion leczonych i nieleczonych), proponujemy model
+proporcjonalnych hazardów z uwzględnieniem skorelowanych czasów zdarzeń.
+
+\begin{verbatim}
+Call:
+coxph(formula = Surv(Time, Status) ~ Drug + Heifer + cluster(Cowid), 
+    data = dane)
+
+  n= 200, number of events= 162 
+
+         coef exp(coef) se(coef) robust se     z Pr(>|z|)  
+Drug   0.3371    1.4008   0.1577    0.1370 2.460   0.0139 *
+Heifer 0.2261    1.2536   0.1703    0.2076 1.089   0.2761  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+       exp(coef) exp(-coef) lower .95 upper .95
+Drug       1.401     0.7139    1.0709     1.832
+Heifer     1.254     0.7977    0.8346     1.883
+
+Concordance= 0.572  (se = 0.023 )
+Rsquare= 0.032   (max possible= 1 )
+Likelihood ratio test= 6.44  on 2 df,   p=0.03996
+Wald test            = 7.28  on 2 df,   p=0.0263
+Score (logrank) test = 6.55  on 2 df,   p=0.03779,   Robust = 7.03  p=0.02969
+
+  (Note: the likelihood ratio and score tests assume independence of
+     observations within a cluster, the Wald and robust score tests do not).
+\end{verbatim}
+
+Na poziomie istotności $\alpha$ = 0.05 wskaźnik leczenia krów ma istotny
+wpływ na szybkość odbudowywania się bariery krew-mleko u krów, natomiast
+,,cielność'' nie ma istotnego wpływu. Hazard odtworzenia bariery
+zwiększa się 1.4 raza przy zastosowaniu leczenia względem podawania
+placebo. Oznacza to, że czas do odtworzenia bariery krew-mleko jest
+krótszy w przypadku zastosowania leczenia. \% Czy estymator odporny
+powinien być większy czy mniejszy niż modelowy?? Jedynie test Walda
+bierze pod uwagę korelację w danych, zatem na jego podstawie
+stwierdzamy, że dopasowany przez nas model jest lepszy niż model pusty
+(p-value w teście Walda wynosi 0.0263).
+
+\section{Zadanie 2}
+
+Oceniamy czas do brakowania z uwzględnieniem efektu czasu oceny SCC i
+log(SCC). Dokonujemy analizy następujących zmiennych:
+
+\begin{itemize}
+\item cowid -- id jałówki
+\item time -- czas do brakowania (w dniach)
+\item status -- wskaźnik brakowania (0 –- nie, 1 -- tak)
+\item herd -- id stada
+\item timeassess -- czas badania laboratoryjnego SCC (w dniach)
+\item logSCC -- logarytm wartosci SCC
+\end{itemize}
+
+W związku z tym, że zasugerowano, iż strategia brakowania jałówek,
+podobnie jak poziom SCC w mleku, mogą znacząco różnić się pomiędzy
+stadami, zdecydowaliśmy się na model z podatnościami.
+
+\begin{verbatim}
+Call:
+coxph(formula = Surv(Time, Status) ~ Timeassess + LogSCC + frailty(Herd), 
+    data = data)
+
+  n= 13835, number of events= 2729 
+
+              coef     se(coef) se2      Chisq  DF    p      
+Timeassess    0.002466 0.006951 0.006868   0.13   1.0 7.2e-01
+LogSCC        0.069244 0.015549 0.015317  19.83   1.0 8.5e-06
+frailty(Herd)                            357.62 309.7 3.1e-02
+
+           exp(coef) exp(-coef) lower .95 upper .95
+Timeassess     1.002     0.9975    0.9889     1.016
+LogSCC         1.072     0.9331    1.0395     1.105
+
+Iterations: 8 outer, 30 Newton-Raphson
+     Variance of random effect= 0.1302054   I-likelihood = -25493.5 
+Degrees of freedom for terms=   1.0   1.0 309.7 
+Concordance= 0.742  (se = 0.006 )
+Likelihood ratio test= 661.7  on 311.7 df,   p=0
+\end{verbatim}
+
+Na poziomie istotności $\alpha$ = 0.05, wszystkie zmienne wykorzystane w
+modelu są istotne statystycznie. Gdy czas wykonania badania
+laboratoryjnego SCC wzrasta o jeden dzień, to hazard czasu do brakowania
+jałówki wzrasta 1.002 raza, oznacza to, że im później po ocieleniu
+zostanie wykonane badanie, tym szybciej jałówka zostanie skazana na
+brakowanie. Natomiast przy wzroście logarytmu wartości SCC o jeden,
+hazard czasu do brakowania jałówki wzrasta 1.072 raza. Ponadto istotny
+wpływ ma róWnież stado, do którego należy jałówka. Wymienione efekty
+odnoszą się tylko do krów z tego samego stada.
+
+\newpage
+\textbf{Kody:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Zadanie 1.}
+\KeywordTok{library}\NormalTok{(survival)}
+\NormalTok{dane <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"C:}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{SurvivalAnalysis}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{PD3}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{reconstitution.dat"}\NormalTok{, }\DataTypeTok{header=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep=}\StringTok{","}\NormalTok{)}
+\NormalTok{model <-}\StringTok{ }\KeywordTok{coxph}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(Time, Status)~Drug +}\StringTok{ }\NormalTok{Heifer +}\StringTok{ }\KeywordTok{cluster}\NormalTok{(Cowid), }\DataTypeTok{data =} \NormalTok{dane) }
+\KeywordTok{summary}\NormalTok{(model)}
+
+\NormalTok{## Zadanie 2.}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"C:}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{SurvivalAnalysis}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{PD3}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{culling.dat"}\NormalTok{, }\DataTypeTok{header=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep=}\StringTok{","}\NormalTok{)}
+\NormalTok{frailty <-}\StringTok{ }\KeywordTok{coxph}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(Time, Status)~Timeassess +}\StringTok{ }\NormalTok{LogSCC +}\StringTok{ }\KeywordTok{frailty}\NormalTok{(Herd), }\DataTypeTok{data =} \NormalTok{data)}
+\KeywordTok{summary}\NormalTok{(frailty)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{document}
