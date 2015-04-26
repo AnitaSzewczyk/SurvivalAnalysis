@@ -1,0 +1,166 @@
+---
+title: "Rak piersi a czas przeżycia bez nawrotu choroby a parametryczna postać modelu"
+output: 
+   pdf_document:
+      includes:
+         in_header: naglowek2.tex
+      highlight: pygments
+      toc: false
+      number_sections: false
+      keep_tex: true
+---
+
+```{r, echo=FALSE}
+library(knitr)
+opts_chunk$set(comment="", message=FALSE, warning=FALSE, tidy.opts=list(keep.blank.line=TRUE, width.cutoff=120),options(width=120), fig.align='center',fig.height=6, fig.width=10,fig.path='figure/beamer-',fig.show='hold',size='footnotesize', cache=TRUE, echo=FALSE)
+```
+```{r}
+
+```
+
+\thispagestyle{fancy}
+
+Chcąc sprawdzić jakie czynniki mają istotnie statystyczny wpływ na czas do zdarzenia jakim jest zgon przy analizie danych dotyczących raka piersi, zaproponowano sprawdzenie czy modele parametryczne zakładające postać rozkładu czasu do zdarzenia są adekwatne w danym problemie medycznym.
+
+```{r, echo=FALSE}
+library(foreign)
+dane <- read.dta("gbcs_short.dta")
+library(survival)
+library(flexsurv)
+library(rms)
+```
+
+
+\textbf{Wybór parametrycznej formy modelu.} Sprawdzając postać parametryczną dla modelu AFT postanowiono wybrać rozkład z bogatej rodziny uogólnionych rozkładów F. Korzystając z pakietu `flexsurv` dopasowano modele Weibulla, Log-logistyczny, Log-normalny, Uogólniony Gamma oraz Uogólniony F.
+
+```{r, echo=TRUE}
+AFT.GG <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
+                             data = dane, dist="gengamma")
+AFT.GF <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
+                             data = dane, dist="genf")
+AFT.LL <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
+                             data = dane, dist="genf", inits=c(3,0.2,0,1,0,0,0,0,0,0,0,0), 
+                      fixedpars = c(3,4))
+AFT.Weibull <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
+                              data = dane, dist="weibull")
+AFT.LN <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
+                              data = dane, dist="lnorm")
+```
+
+W celu oceny, który model jest możliwy, przeprowdzono testy ilorazu wiarogodności jak poniżej.
+
+Wartości logarytmów funkcji wiarogodności dla modeli to odpowiednio.
+```{r, eval = FALSE}
+matrix( c(AFT.GG$loglik, # loglik generalized G 
+AFT.GF$loglik, # loglik generalized F
+AFT.LL$loglik, # logik log-logistic
+AFT.Weibull$loglik, # logik Weibull
+AFT.LN$loglik), ncol=1) ->x50 # logik log-normalny
+rownames(x50) <- c("Gen Gamma", "Gen F", "Log-logistic", "Weibull", "Log-normal")
+colnames(x50) <- "loglik"
+knitr::kable(x50, format="latex")
+```
+
+\begin{table}[hbt!]
+\centering
+\begin{tabular}{lr}
+\toprule%
+  & loglik\\ \toprule%
+
+Gen Gamma & -2553.051\\
+
+Gen F & -2553.067\\
+
+Log-logistic & -2563.449\\
+
+Weibull & -2575.998\\
+
+Log-normal & -2555.798\\
+\bottomrule
+\end{tabular}
+\caption{Wartości logarytmów funkcji wiarogodności dla modeli parametrycznych.}
+\end{table}
+Zaś testy:
+
+```{r, eval=FALSE}
+matrix(round(c(1-pchisq(2*(AFT.GF$loglik-AFT.GG$loglik),2),
+1-pchisq(2*(AFT.GG$loglik-AFT.LL$loglik),2),
+1-pchisq(2*(AFT.GG$loglik-AFT.Weibull$loglik),2), 
+1-pchisq(2*(AFT.GG$loglik-AFT.LN$loglik),2)), digits=4), ncol=1) -> x65
+rownames(x65) <- c("GF vs GG", "GG vs LL", "GG vs Wei", "GG vs LN")
+colnames(x65) <- "p-wartość"
+knitr::kable(x65, format="latex")
+```
+
+
+\begin{table}[hbt!]
+\centering
+\begin{tabular}{lr}
+\toprule%
+  & p-wartość\\
+\toprule%
+GF vs GG & 1.0000\\
+
+GG vs LL & 0.0000\\
+
+GG vs Wei & 0.0000\\
+
+GG vs LN & 0.0641\\
+\bottomrule
+\end{tabular}
+\caption{Wartości krytycze testów.}
+\end{table}
+
+
+Testując możliowść użycia danego rozkładu przeprowadzono testy dla rozładu uogólnionego gamma i uogólnionego F i stwierdzono, że na poziomie istonotści $\alpha=0.05$ po poprawce Bonferroniego uwzględnijącej 4 testy czyli na poziomie istotności dla pojedycznego testu równym $\alpha_i = 0.0125, i =1,2,3,4$ sprawdzono, że nie ma podstaw do odrzucenia hipotezy zerowej w teście sprawdzającym czy model z mniejszej rodziny rozkładów uogólnoinych gamma jest właściwy w porównaniu do większego modelu z rodziny rozkładów uogólnionych F. Następnie dla rozdkładu z rodziny uogólnionej gamma przeprowadzono 3 testy sprawdzające czy modele z mniejszej rodziny (log-normalny, log-logistyczny, weibulla) są właściwe w porównaniu do rozkładu z uogólnionej rodziny rozkładów gamma. Tylko w przypadku rozkładu log-normalnego nie ma podstaw do odrzucenia hipotezy, że ten rozkład jest właściwy w porównaniu do rozkładu z szerszej rodziny rozkładów uogólnionych gamma. Dla rozkładu log-logistycznego i Weibulla odrzucono hipotezę zerową o tym, że te rozkłady są właściwe w stosunku do rozkładu z szerszej rodziny rozkładów uogólnionych gamma.
+
+Zatem w dalszej części raportu sprawdzamy dopasowanie modelu log-normalnego.
+
+\textbf{Sprawdzenie dopasowania modelu log-logistycznego.}
+```{r, results='hide'}
+psm(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
+        data = dane, dist = "lognormal") -> logNorx1
+resid(logNorx1,type="cens") -> res.LogN1
+pdf( file = "lognormal.pdf", onefile=FALSE)
+
+
+survplot(npsurv(res.LogN1 ~1),conf="none",ylab="Survival probability", xlab="Residual")
+lines(res.LogN1)
+dev.off()
+
+
+# pdf( file = "logKM_a_res.pdf", onefile=FALSE)
+# plot( survfit(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
+#         data = dane),fun=function(x) -log(x) ) 
+# dev.off()
+
+
+```
+\begin{figure}[hbt!]
+  \vspace{-20pt}
+  \begin{center}
+     \includegraphics[width=0.7\textwidth, height=3in]{lognormal.pdf}
+  \end{center}
+  \vspace{-20pt}
+  \label{fig:sc}
+  \caption{Reszty modelu a cenzurowana próbka z rozkładu log-normalnego.}
+
+\end{figure}
+Sprawdzenie czy reszty modelu zachowują się jak cenzurowana próbka z rozkładu log-normalnego, pokazane jest na Rysunku 1.
+Widać z wykresu, że nie ma widocznych odstępstw co może świadczyć o
+
+Dodatkowo można spojrzeć na wyres przekształcenia $-\ln$ oszacowanej krzywej przeżycia i reszty Coxa-Snell, który w tym wypadku powinien być liniowy ze współczynnikiem kierunkowym = 1 - ale ja nie umiem tego zrobic.
+
+Parametryczne założenie dla reszty, że pochodzą z rozkładu log-normalnego wygląda na spełnione z Rysunku 1.
+
+\textbf{ Podsumownie modelu log-normalnego.}
+
+Podsumowanie modelu można uzyskać polecenim jak poniżej
+```{r, echo=TRUE}
+
+psm(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
+        data = dane, dist = "lognormal")
+```
+
+
+
