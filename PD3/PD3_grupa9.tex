@@ -55,7 +55,7 @@
 \hypersetup{breaklinks=true,
             bookmarks=true,
             pdfauthor={},
-            pdftitle={Analiza przeżycia},
+            pdftitle={},
             colorlinks=true,
             citecolor=blue,
             urlcolor=blue,
@@ -74,9 +74,9 @@
 %%% Change title format to be more compact
 \usepackage{titling}
 \setlength{\droptitle}{-2em}
-  \title{Analiza przeżycia}
-  \pretitle{\vspace{\droptitle}\centering\huge}
-  \posttitle{\par}
+  \title{}
+  \pretitle{\vspace{\droptitle}}
+  \posttitle{}
   \author{}
   \preauthor{}\postauthor{}
   \date{}
@@ -117,23 +117,25 @@
 \maketitle
 
 
-\thispagestyle{fancy} \section{Zadanie 1}
+\thispagestyle{fancy}
+\textbf{Zadanie 1 - czas do odtworzenia bariery krew-mleko u krów z zapaleniem wymienia}
 
 Oceniamy efekt leczenia z uwzględnieniem ,,cielności'' krów z zapaleniem
 wymienia. Dokonujemy analizy następujących zmiennych:
 
 \begin{itemize}
-\item cowid -- id krowy
-\item time -- czas do odtworzenia bariery (w dniach)
-\item status -- wskaźnik odtworzenia bariery (0 –- nie, 1 -- tak)
-\item drug -- leczenie (0 –- placebo, 1 -- aktywny lek)
+\item cowid -- id krowy,
+\item time -- czas do odtworzenia bariery (w dniach),
+\item status -- wskaźnik odtworzenia bariery (0 –- nie, 1 -- tak),
+\item drug -- leczenie (0 –- placebo, 1 -- aktywny lek),
 \item heifer -- wskaźnik „cielności” (0 –- dwa lub więcej cielęta, 1 –- jedno lub
-jałówka)
+jałówka).
 \end{itemize}
 
-W związku z tym, że posiadamy po dwa pomiary czasów dla każdej krowy
-(oddzielnie dla wymion leczonych i nieleczonych), proponujemy model
-proporcjonalnych hazardów z uwzględnieniem skorelowanych czasów zdarzeń.
+W związku z tym, że posiadamy po dwa pomiary czasów do odtworzenia
+bariery dla każdej krowy (oddzielnie dla wymion leczonych i
+nieleczonych), proponujemy model proporcjonalnych hazardów z
+uwzględnieniem skorelowanych czasów tych zdarzeń.
 
 \begin{verbatim}
 Call:
@@ -162,18 +164,22 @@ Score (logrank) test = 6.55  on 2 df,   p=0.03779,   Robust = 7.03  p=0.02969
      observations within a cluster, the Wald and robust score tests do not).
 \end{verbatim}
 
-Na poziomie istotności $\alpha$ = 0.05 wskaźnik leczenia krów ma istotny
-wpływ na szybkość odbudowywania się bariery krew-mleko u krów, natomiast
-,,cielność'' nie ma istotnego wpływu. Hazard odtworzenia bariery
-zwiększa się 1.4 raza przy zastosowaniu leczenia względem podawania
-placebo. Oznacza to, że czas do odtworzenia bariery krew-mleko jest
-krótszy w przypadku zastosowania leczenia. \% Czy estymator odporny
-powinien być większy czy mniejszy niż modelowy?? Jedynie test Walda
-bierze pod uwagę korelację w danych, zatem na jego podstawie
-stwierdzamy, że dopasowany przez nas model jest lepszy niż model pusty
-(p-value w teście Walda wynosi 0.0263).
+Na poziomie istotności \(\alpha\) = 0.05 wskaźnik leczenia krów ma
+istotny wpływ na szybkość odbudowywania się bariery krew-mleko u krów,
+natomiast ,,cielność'' nie ma istotnego wpływu. Hazard odtworzenia
+bariery zwiększa się 1.4 raza przy zastosowaniu leczenia względem
+podawania placebo. Oznacza to, że czas do odtworzenia bariery krew-mleko
+jest krótszy w przypadku zastosowania leczenia. Odchyelnie estymatora
+odpornego jest mniejsze od odchylenia normalnego estymatora
+współczynnika dla leczenia, co może świadczyć o tym, że uwzględnienie
+skorelownia czasów jest słusznym zabiegiem. Jedynie test Walda nie
+zakłada niezależności czasów, zatem na jego podstawie stwierdzamy, że
+dopasowany przez nas model jest lepszy niż model pusty (p-wartość w
+teście Walda wynosi 0.0263 oznacza, że na poziomie istotności \(0.05\)
+mamy statystycznie istotne podstawy do odrzucenia hipotezy zerowej o
+tym, że model pusty lepiej wyjaśnia dane).
 
-\section{Zadanie 2}
+\textbf{Zadanie 2 - brakowanie jałówek}
 
 Oceniamy czas do brakowania z uwzględnieniem efektu czasu oceny SCC i
 log(SCC). Dokonujemy analizy następujących zmiennych:
@@ -214,15 +220,13 @@ Concordance= 0.742  (se = 0.006 )
 Likelihood ratio test= 661.7  on 311.7 df,   p=0
 \end{verbatim}
 
-Na poziomie istotności $\alpha$ = 0.05, wszystkie zmienne wykorzystane w
-modelu są istotne statystycznie. Gdy czas wykonania badania
-laboratoryjnego SCC wzrasta o jeden dzień, to hazard czasu do brakowania
-jałówki wzrasta 1.002 raza, oznacza to, że im później po ocieleniu
-zostanie wykonane badanie, tym szybciej jałówka zostanie skazana na
-brakowanie. Natomiast przy wzroście logarytmu wartości SCC o jeden,
-hazard czasu do brakowania jałówki wzrasta 1.072 raza. Ponadto istotny
-wpływ ma róWnież stado, do którego należy jałówka. Wymienione efekty
-odnoszą się tylko do krów z tego samego stada.
+Na poziomie istotności \(\alpha\) = 0.05, zmienna \texttt{LogSCC} jest
+statystycznie istotna w modelu. Wartość krytyczna przy zmiennej
+\texttt{frailty(Hazard)}, która jest mniejsza od zakładanego poziomu
+istotności \(0.05\) oznacza, że mamy statystycznie istotne podstawy do
+stwierdzenia, że istenieje efekt stada. Przy wzroście logarytmu wartości
+SCC o jeden, hazard do brakowania jałówki wzrasta 1.072 raza. Wymienione
+efekty odnoszą się tylko do krów z tego samego stada.
 
 \newpage
 \textbf{Kody:}
