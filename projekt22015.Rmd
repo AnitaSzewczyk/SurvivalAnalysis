@@ -115,7 +115,7 @@ GG vs LN & 0.0641\\
 \end{table}
 
 
-Testując możliowść użycia danego rozkładu, przeprowadzono testy dla uogólnionego rozładu gamma \text{i uogólnionego} F. Stwierdzono, że na poziomie istotności $\alpha=0.05$, po poprawce Bonferroniego uwzględniającej 4 testy, czyli na poziomie istotności dla pojedycznego testu równym $\alpha_i = 0.0125, i =1,2,3,4$, sprawdzono, że nie ma podstaw do odrzucenia hipotezy zerowej w teście sprawdzającym czy model \text{z mniejszej} rodziny uogólnionych rozkładów gamma jest właściwy w porównaniu do większego modelu z rodziny uogólnionych rozkładów F. Następnie dla rozkładu z uogólnionej rodziny rozkładów gamma przeprowadzono 3 testy sprawdzające, czy modele z mniejszej rodziny (log-normalny, log-logistyczny, Weibulla) są właściwe \text{w porównaniu} do rozkładu z uogólnionej rodziny rozkładów gamma. Tylko w przypadku rozkładu log-normalnego nie ma podstaw \text{do odrzucenia} hipotezy, że ten rozkład jest właściwy w porównaniu \text{do rozkładu} z szerszej rodziny rozkładów uogólnionych gamma. Dla rozkładu log-logistycznego i Weibulla odrzucono hipotezę zerową o tym, że te rozkłady są właściwe w stosunku do rozkładu z szerszej rodziny rozkładów uogólnionych gamma.
+Testując możliowść użycia danego rozkładu, przeprowadzono testy dla uogólnionego rozładu gamma \text{i uogólnionego} F. Stwierdzono, na poziomie istotności $\alpha=0.05$, po poprawce Bonferroniego uwzględniającej 4 testy, czyli na poziomie istotności dla pojedycznego testu równym $\alpha_i = 0.0125, i =1,2,3,4$, że nie ma podstaw do odrzucenia hipotezy zerowej w teście sprawdzającym czy model \text{z mniejszej} rodziny uogólnionych rozkładów gamma jest właściwy w porównaniu do większego modelu z rodziny uogólnionych rozkładów F. Następnie dla rozkładu z uogólnionej rodziny rozkładów gamma przeprowadzono 3 testy sprawdzające, czy modele z mniejszej rodziny (log-normalny, log-logistyczny, Weibulla) są właściwe \text{w porównaniu} do rozkładu z uogólnionej rodziny rozkładów gamma. Tylko w przypadku rozkładu log-normalnego nie ma podstaw \text{do odrzucenia} hipotezy, że ten rozkład jest właściwy w porównaniu \text{do rozkładu} z szerszej rodziny rozkładów uogólnionych gamma. Dla rozkładu log-logistycznego i Weibulla odrzucono hipotezę zerową o tym, że te rozkłady są właściwe w stosunku do rozkładu z szerszej rodziny rozkładów uogólnionych gamma.
 
 Zatem w dalszej części raportu sprawdzamy dopasowanie modelu log-normalnego.
 
@@ -150,11 +150,7 @@ dev.off()
 
 \end{figure}
 Sprawdzenie, czy reszty modelu zachowują się jak cenzurowana próbka z rozkładu log-normalnego, pokazane jest na Rysunku 1.
-Widać z wykresu, że nie ma widocznych odstępstw między krzywymi, co może świadczyć o dobrym dopasowaniu modelu.
-
-\textcolor{red}{Dodatkowo można spojrzeć na wykres przekształcenia $-\ln$ oszacowanej krzywej przeżycia i reszty Coxa-Snell, który w tym wypadku powinien być liniowy ze współczynnikiem kierunkowym = 1 - ale ja nie umiem tego zrobic.}
-
-Parametryczne założenie, że reszty pochodzą z rozkładu log-normalnego wydaje się być spełnione na podstawie \text{Rysunku 1.}
+Widać z wykresu, że nie ma widocznych odstępstw między krzywymi, co może świadczyć o dobrym dopasowaniu modelu. Parametryczne założenie, że reszty pochodzą z rozkładu log-normalnego wydaje się być spełnione na podstawie \text{Rysunku 1.}
 
 \textbf{ Podsumownie modelu log-normalnego.}
 
