@@ -33,7 +33,7 @@ library(rms)
 
 \textbf{Wybór parametrycznej formy modelu.} 
 
-Sprawdzając postać parametryczną dla modelu AFT postanowiono wybrać rozkład z bogatej rodziny uogólnionych rozkładów F. Korzystając z pakietu `flexsurv` dopasowano modele Weibulla, Log-logistyczny, Log-normalny, Uogólniony Gamma oraz Uogólniony F.
+Sprawdzając postać parametryczną dla modelu AFT postanowiono wybrać rozkład z bogatej rodziny uogólnionych rozkładów F. Korzystając z pakietu `flexsurv` dopasowano modele Weibulla, Log-logistyczny, \text{Log-normalny}, Uogólniony Gamma oraz Uogólniony F.
 
 ```{r, echo=TRUE}
 AFT.GG <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
@@ -42,11 +42,12 @@ AFT.GF <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno
                              data = dane, dist="genf")
 AFT.LL <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
                              data = dane, dist="genf", inits=c(3,0.2,0,1,0,0,0,0,0,0,0,0), 
-                      fixedpars = c(3,4))
-AFT.Weibull <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
-                              data = dane, dist="weibull")
+                             fixedpars = c(3,4))
+AFT.Weibull <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+
+                             size+nodes,
+                             data = dane, dist="weibull")
 AFT.LN <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
-                              data = dane, dist="lnorm")
+                             data = dane, dist="lnorm")
 ```
 
 W celu oceny, który model jest adekwatny, przeprowdzono testy ilorazu wiarogodności, jak poniżej.
@@ -114,7 +115,7 @@ GG vs LN & 0.0641\\
 \end{table}
 
 
-Testując możliowść użycia danego rozkładu, przeprowadzono testy dla uogólnionego rozładu gamma i uogólnionego F. Stwierdzono, że na poziomie istonotści $\alpha=0.05$, po poprawce Bonferroniego uwzględnijącej 4 testy, czyli na poziomie istotności dla pojedycznego testu równym $\alpha_i = 0.0125, i =1,2,3,4$, sprawdzono, że nie ma podstaw do odrzucenia hipotezy zerowej w teście sprawdzającym czy model z mniejszej rodziny uogólnoinych rozkładów gamma jest właściwy w porównaniu do większego modelu z rodziny uogólnionych rozkładów F. Następnie dla rozdkładu z uogólnionej rodziny rozkładów gamma przeprowadzono 3 testy sprawdzające, czy modele z mniejszej rodziny (log-normalny, log-logistyczny, Weibulla) są właściwe w porównaniu do rozkładu z uogólnionej rodziny rozkładów gamma. Tylko w przypadku rozkładu log-normalnego nie ma podstaw \text{do odrzucenia} hipotezy, że ten rozkład jest właściwy w porównaniu do rozkładu z szerszej rodziny rozkładów uogólnionych gamma. Dla rozkładu log-logistycznego i Weibulla odrzucono hipotezę zerową o tym, że te rozkłady są właściwe w stosunku do rozkładu z szerszej rodziny rozkładów uogólnionych gamma.
+Testując możliowść użycia danego rozkładu, przeprowadzono testy dla uogólnionego rozładu gamma \text{i uogólnionego} F. Stwierdzono, że na poziomie istotności $\alpha=0.05$, po poprawce Bonferroniego uwzględniającej 4 testy, czyli na poziomie istotności dla pojedycznego testu równym $\alpha_i = 0.0125, i =1,2,3,4$, sprawdzono, że nie ma podstaw do odrzucenia hipotezy zerowej w teście sprawdzającym czy model \text{z mniejszej} rodziny uogólnionych rozkładów gamma jest właściwy w porównaniu do większego modelu z rodziny uogólnionych rozkładów F. Następnie dla rozkładu z uogólnionej rodziny rozkładów gamma przeprowadzono 3 testy sprawdzające, czy modele z mniejszej rodziny (log-normalny, log-logistyczny, Weibulla) są właściwe \text{w porównaniu} do rozkładu z uogólnionej rodziny rozkładów gamma. Tylko w przypadku rozkładu log-normalnego nie ma podstaw \text{do odrzucenia} hipotezy, że ten rozkład jest właściwy w porównaniu \text{do rozkładu} z szerszej rodziny rozkładów uogólnionych gamma. Dla rozkładu log-logistycznego i Weibulla odrzucono hipotezę zerową o tym, że te rozkłady są właściwe w stosunku do rozkładu z szerszej rodziny rozkładów uogólnionych gamma.
 
 Zatem w dalszej części raportu sprawdzamy dopasowanie modelu log-normalnego.
 
@@ -157,7 +158,7 @@ Parametryczne założenie, że reszty pochodzą z rozkładu log-normalnego wydaj
 
 \textbf{ Podsumownie modelu log-normalnego.}
 
-Podsumowanie modelu można uzyskać polecenim jak poniżej:
+Podsumowanie modelu można uzyskać poleceniem jak poniżej:
 ```{r, echo=TRUE}
 
 psm(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
@@ -205,12 +206,10 @@ matrix(round(c(1-pchisq(2*(AFT.GF$loglik-AFT.GG$loglik),2),
 rownames(x65) <- c("GF vs GG", "GG vs LL", "GG vs Wei", "GG vs LN")
 colnames(x65) <- "p-wartość"
 
-#Sprawdzenie dopasowania modelu log-logistycznego
-psm(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
-        data = dane, dist = "lognormal") -> logNorx1
-resid(logNorx1,type="cens") -> res.LogN1
-pdf( file = "lognormal.pdf", onefile=FALSE)
-
+#Sprawdzenie dopasowania modelu log-normalnego
+logNorx1 <- psm(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes, 
+        data = dane, dist = "lognormal") 
+res.LogN1 <- resid(logNorx1,type="cens")
 
 survplot(npsurv(res.LogN1 ~1),conf="none",ylab="Survival probability", xlab="Residual")
 lines(res.LogN1)

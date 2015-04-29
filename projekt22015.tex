@@ -95,6 +95,7 @@
 \usepackage{rotating}
 \usepackage{subfigure}
 \usepackage{pdflscape}
+
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -109,7 +110,7 @@
             linkcolor=black,
             citecolor=black,
             urlcolor=black}
-%\title{\textbf{\LARGE{Biostatystyka - Projekt zaliczeniowy} }}
+%\title{\textbf{\LARGE{Biostatystyka - Projekt zaliczeniowy bardzo fajny} }}
 
 
 \begin{document}
@@ -130,7 +131,7 @@ medycznym.
 Sprawdzając postać parametryczną dla modelu AFT postanowiono wybrać
 rozkład z bogatej rodziny uogólnionych rozkładów F. Korzystając z
 pakietu \texttt{flexsurv} dopasowano modele Weibulla, Log-logistyczny,
-Log-normalny, Uogólniony Gamma oraz Uogólniony F.
+\text{Log-normalny}, Uogólniony Gamma oraz Uogólniony F.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -140,11 +141,12 @@ Log-normalny, Uogólniony Gamma oraz Uogólniony F.
                              \DataTypeTok{data =} \NormalTok{dane, }\DataTypeTok{dist=}\StringTok{"genf"}\NormalTok{)}
 \NormalTok{AFT.LL <-}\StringTok{ }\KeywordTok{flexsurvreg}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(rectime,censrec)~horm+prog+estr+}\KeywordTok{as.factor}\NormalTok{(grade)+meno+size+nodes, }
                              \DataTypeTok{data =} \NormalTok{dane, }\DataTypeTok{dist=}\StringTok{"genf"}\NormalTok{, }\DataTypeTok{inits=}\KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\FloatTok{0.2}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{), }
-                      \DataTypeTok{fixedpars =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{))}
-\NormalTok{AFT.Weibull <-}\StringTok{ }\KeywordTok{flexsurvreg}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(rectime,censrec)~horm+prog+estr+}\KeywordTok{as.factor}\NormalTok{(grade)+meno+size+nodes, }
-                              \DataTypeTok{data =} \NormalTok{dane, }\DataTypeTok{dist=}\StringTok{"weibull"}\NormalTok{)}
+                             \DataTypeTok{fixedpars =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{))}
+\NormalTok{AFT.Weibull <-}\StringTok{ }\KeywordTok{flexsurvreg}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(rectime,censrec)~horm+prog+estr+}\KeywordTok{as.factor}\NormalTok{(grade)+meno+}
+\StringTok{                             }\NormalTok{size+nodes,}
+                             \DataTypeTok{data =} \NormalTok{dane, }\DataTypeTok{dist=}\StringTok{"weibull"}\NormalTok{)}
 \NormalTok{AFT.LN <-}\StringTok{ }\KeywordTok{flexsurvreg}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(rectime,censrec)~horm+prog+estr+}\KeywordTok{as.factor}\NormalTok{(grade)+meno+size+nodes, }
-                              \DataTypeTok{data =} \NormalTok{dane, }\DataTypeTok{dist=}\StringTok{"lnorm"}\NormalTok{)}
+                             \DataTypeTok{data =} \NormalTok{dane, }\DataTypeTok{dist=}\StringTok{"lnorm"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -194,22 +196,23 @@ GG vs LN & 0.0641\\
 \end{table}
 
 Testując możliowść użycia danego rozkładu, przeprowadzono testy dla
-uogólnionego rozładu gamma i uogólnionego F. Stwierdzono, że na poziomie
-istonotści $\alpha=0.05$, po poprawce Bonferroniego uwzględnijącej 4
-testy, czyli na poziomie istotności dla pojedycznego testu równym
-$\alpha_i = 0.0125, i =1,2,3,4$, sprawdzono, że nie ma podstaw do
-odrzucenia hipotezy zerowej w teście sprawdzającym czy model z mniejszej
-rodziny uogólnoinych rozkładów gamma jest właściwy w porównaniu do
-większego modelu z rodziny uogólnionych rozkładów F. Następnie dla
-rozdkładu z uogólnionej rodziny rozkładów gamma przeprowadzono 3 testy
-sprawdzające, czy modele z mniejszej rodziny (log-normalny,
-log-logistyczny, Weibulla) są właściwe w porównaniu do rozkładu z
-uogólnionej rodziny rozkładów gamma. Tylko w przypadku rozkładu
-log-normalnego nie ma podstaw \text{do odrzucenia} hipotezy, że ten
-rozkład jest właściwy w porównaniu do rozkładu z szerszej rodziny
-rozkładów uogólnionych gamma. Dla rozkładu log-logistycznego i Weibulla
-odrzucono hipotezę zerową o tym, że te rozkłady są właściwe w stosunku
-do rozkładu z szerszej rodziny rozkładów uogólnionych gamma.
+uogólnionego rozładu gamma \text{i uogólnionego} F. Stwierdzono, że na
+poziomie istotności $\alpha=0.05$, po poprawce Bonferroniego
+uwzględniającej 4 testy, czyli na poziomie istotności dla pojedycznego
+testu równym $\alpha_i = 0.0125, i =1,2,3,4$, sprawdzono, że nie ma
+podstaw do odrzucenia hipotezy zerowej w teście sprawdzającym czy model
+\text{z mniejszej} rodziny uogólnionych rozkładów gamma jest właściwy w
+porównaniu do większego modelu z rodziny uogólnionych rozkładów F.
+Następnie dla rozkładu z uogólnionej rodziny rozkładów gamma
+przeprowadzono 3 testy sprawdzające, czy modele z mniejszej rodziny
+(log-normalny, log-logistyczny, Weibulla) są właściwe
+\text{w porównaniu} do rozkładu z uogólnionej rodziny rozkładów gamma.
+Tylko w przypadku rozkładu log-normalnego nie ma podstaw
+\text{do odrzucenia} hipotezy, że ten rozkład jest właściwy w porównaniu
+\text{do rozkładu} z szerszej rodziny rozkładów uogólnionych gamma. Dla
+rozkładu log-logistycznego i Weibulla odrzucono hipotezę zerową o tym,
+że te rozkłady są właściwe w stosunku do rozkładu z szerszej rodziny
+rozkładów uogólnionych gamma.
 
 Zatem w dalszej części raportu sprawdzamy dopasowanie modelu
 log-normalnego.
@@ -239,7 +242,7 @@ wydaje się być spełnione na podstawie \text{Rysunku 1.}
 
 \textbf{ Podsumownie modelu log-normalnego.}
 
-Podsumowanie modelu można uzyskać polecenim jak poniżej:
+Podsumowanie modelu można uzyskać poleceniem jak poniżej:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -338,12 +341,10 @@ raza, przy założeniu stałości pozostałych zmiennych.
 \KeywordTok{rownames}\NormalTok{(x65) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"GF vs GG"}\NormalTok{, }\StringTok{"GG vs LL"}\NormalTok{, }\StringTok{"GG vs Wei"}\NormalTok{, }\StringTok{"GG vs LN"}\NormalTok{)}
 \KeywordTok{colnames}\NormalTok{(x65) <-}\StringTok{ "p-wartość"}
 
-\CommentTok{#Sprawdzenie dopasowania modelu log-logistycznego}
-\KeywordTok{psm}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(rectime,censrec)~horm+prog+estr+}\KeywordTok{as.factor}\NormalTok{(grade)+meno+size+nodes, }
-        \DataTypeTok{data =} \NormalTok{dane, }\DataTypeTok{dist =} \StringTok{"lognormal"}\NormalTok{) ->}\StringTok{ }\NormalTok{logNorx1}
-\KeywordTok{resid}\NormalTok{(logNorx1,}\DataTypeTok{type=}\StringTok{"cens"}\NormalTok{) ->}\StringTok{ }\NormalTok{res.LogN1}
-\KeywordTok{pdf}\NormalTok{( }\DataTypeTok{file =} \StringTok{"lognormal.pdf"}\NormalTok{, }\DataTypeTok{onefile=}\OtherTok{FALSE}\NormalTok{)}
-
+\CommentTok{#Sprawdzenie dopasowania modelu log-normalnego}
+\NormalTok{logNorx1 <-}\StringTok{ }\KeywordTok{psm}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(rectime,censrec)~horm+prog+estr+}\KeywordTok{as.factor}\NormalTok{(grade)+meno+size+nodes, }
+        \DataTypeTok{data =} \NormalTok{dane, }\DataTypeTok{dist =} \StringTok{"lognormal"}\NormalTok{) }
+\NormalTok{res.LogN1 <-}\StringTok{ }\KeywordTok{resid}\NormalTok{(logNorx1,}\DataTypeTok{type=}\StringTok{"cens"}\NormalTok{)}
 
 \KeywordTok{survplot}\NormalTok{(}\KeywordTok{npsurv}\NormalTok{(res.LogN1 ~}\DecValTok{1}\NormalTok{),}\DataTypeTok{conf=}\StringTok{"none"}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{"Survival probability"}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{"Residual"}\NormalTok{)}
 \KeywordTok{lines}\NormalTok{(res.LogN1)}
