@@ -1,5 +1,5 @@
 ---
-title: "Czas przeżycia bez nawrotu choroby -- parametryczna postać modelu"
+title: "Parametryczna postać czasu do nawrotu choroby w leczeniu raka piersi"
 output: 
    pdf_document:
       includes:
@@ -50,9 +50,9 @@ AFT.LN <- flexsurvreg(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno
                              data = dane, dist="lnorm")
 ```
 
-W celu oceny, który model jest adekwatny, przeprowdzono testy ilorazu wiarogodności, jak poniżej.
+W celu oceny, który model jest adekwatny i wystarczający, przeprowdzono testy ilorazu wiarogodności, jak poniżej.
 
-Wartości logarytmów funkcji wiarogodności dla modeli:
+Wartości logarytmów funkcji wiarogodności analizowanych modeli:
 ```{r, eval = FALSE}
 matrix( c(AFT.GG$loglik, # loglik generalized G 
 AFT.GF$loglik, # loglik generalized F
@@ -115,7 +115,7 @@ GG vs LN & 0.0641\\
 \end{table}
 
 
-Testując możliowść użycia danego rozkładu, przeprowadzono testy dla uogólnionego rozładu gamma \text{i uogólnionego} F. Stwierdzono, na poziomie istotności $\alpha=0.05$, po poprawce Bonferroniego uwzględniającej 4 testy, czyli na poziomie istotności dla pojedycznego testu równym $\alpha_i = 0.0125, i =1,2,3,4$, że nie ma podstaw do odrzucenia hipotezy zerowej w teście sprawdzającym czy model \text{z mniejszej} rodziny uogólnionych rozkładów gamma jest właściwy w porównaniu do większego modelu z rodziny uogólnionych rozkładów F. Następnie dla rozkładu z uogólnionej rodziny rozkładów gamma przeprowadzono 3 testy sprawdzające, czy modele z mniejszej rodziny (log-normalny, log-logistyczny, Weibulla) są właściwe \text{w porównaniu} do rozkładu z uogólnionej rodziny rozkładów gamma. Tylko w przypadku rozkładu log-normalnego nie ma podstaw \text{do odrzucenia} hipotezy, że ten rozkład jest właściwy w porównaniu \text{do rozkładu} z szerszej rodziny rozkładów uogólnionych gamma. Dla rozkładu log-logistycznego i Weibulla odrzucono hipotezę zerową o tym, że te rozkłady są właściwe w stosunku do rozkładu z szerszej rodziny rozkładów uogólnionych gamma.
+Testując możliowść użycia danego rozkładu, najpierw przeprowadzono test dla uogólnionego rozładu gamma \text{i uogólnionego} F. Stwierdzono, na poziomie istotności $\alpha=0.05$, po poprawce Bonferroniego uwzględniającej 4 testy, czyli na poziomie istotności dla pojedycznego testu równym $\alpha_i = 0.0125, i =1,2,3,4$, że nie ma podstaw do odrzucenia hipotezy zerowej w teście sprawdzającym czy model \text{z mniejszej} rodziny uogólnionych rozkładów gamma jest właściwy w porównaniu do modelu z większej rodziny uogólnionych rozkładów F. Następnie dla rozkładu z uogólnionej rodziny rozkładów gamma przeprowadzono 3 testy sprawdzające, czy modele z mniejszej rodziny (log-normalny, log-logistyczny, Weibulla) są właściwe \text{w porównaniu} do rozkładu z uogólnionej rodziny rozkładów gamma. Tylko w przypadku rozkładu log-normalnego nie ma podstaw \text{do odrzucenia} hipotezy, że ten rozkład jest właściwy w porównaniu \text{do rozkładu} z szerszej rodziny rozkładów uogólnionych gamma. Dla rozkładu log-logistycznego i Weibulla odrzucono hipotezę zerową o tym, że te rozkłady są właściwe w stosunku do rozkładu z szerszej rodziny rozkładów uogólnionych gamma.
 
 Zatem w dalszej części raportu sprawdzamy dopasowanie modelu log-normalnego.
 
@@ -149,8 +149,8 @@ dev.off()
   \caption{Reszty modelu a cenzurowana próbka z rozkładu log-normalnego.}
 
 \end{figure}
-Sprawdzenie, czy reszty modelu zachowują się jak cenzurowana próbka z rozkładu log-normalnego, pokazane jest na Rysunku 1.
-Widać z wykresu, że nie ma widocznych odstępstw między krzywymi, co może świadczyć o dobrym dopasowaniu modelu. Parametryczne założenie, że reszty pochodzą z rozkładu log-normalnego wydaje się być spełnione na podstawie \text{Rysunku 1.}
+W następnym kroku zweryfikowano, czy reszty modelu zachowują się jak cenzurowana próbka z rozkładu log-normalnego, co zostało pokazane na Rysunku 1.
+Na podstawie wykresu widać, że nie ma widocznych odstępstw między krzywymi, co może świadczyć o dobrym dopasowaniu modelu. Parametryczne założenie, że reszty pochodzą z rozkładu log-normalnego wydaje się być spełnione na podstawie \text{Rysunku 1.}
 
 \textbf{ Podsumownie modelu log-normalnego.}
 
@@ -161,7 +161,7 @@ psm(Surv(rectime,censrec)~horm+prog+estr+as.factor(grade)+meno+size+nodes,
         data = dane, dist = "lognormal")
 ```
 
-Zmiennymi istotnymi w modelu są `horm`, `prog`, oba poziomy zmiennej `grade` względem poziomu referencyjnego oraz `nodes`. Współczynniki modelu dla tych zmiennych wynoszą odpowiednio 0.3339, 0.4995, -0.4396, -0.4780, -0.0483. Oznacza to, że czas do nawrotu choroby przy użyciu terapii hormonalnej jest dłuższy $e^{0.3339} = 1.4$ raza w porównaniu do sytuacji gdy nie jest stosowana terapia hormonalna, przy założeniu stałości pozostałych zmiennych. Czas do nawrotu choroby przy dodatnim wskaźniku progesteronu jest dłuższy $e^{0.4995} = 1.6$ raza w porównaniu do sytuacji gdy pacjentka posiada ujemny wskaźnik poziomu progesteronu, przy założeniu stałości pozostałych zmiennych. Czas do nawrotu choroby przy średnim stopniu zróżnicowania komórek nowotworu jest krótszy $e^{-0.4396} = 0.64$ raza w porównaniu do sytuacji gdy pacjentka posiada wysoki stopień zróżnicowania komórek nowotworu, przy założeniu stałości pozostałych zmiennych. Natomiast gdy pacjentka posiada niski stopień zróżnicowania nowotworu, to czas do nawrotu choroby jest krótszy $e^{-0.4780} = 0.62$ raza w porównaniu do sytuacji gdy pacjentka posiada wysoki stopień zróżnicowania komórek nowotworu, przy założeniu stałości pozostałych zmiennych. Czas do nawrotu choroby przy wzroście liczby węzłów chłonnych \text{z przerzutami} nowotworu o jeden jest krótszy $e^{-0.0483} = 0.95$ raza, przy założeniu stałości pozostałych zmiennych.
+Zmiennymi istotnymi w modelu są `horm`, `prog`, oba poziomy zmiennej `grade` względem poziomu referencyjnego oraz `nodes`. Współczynniki modelu dla tych zmiennych wynoszą odpowiednio 0.3339, 0.4995, -0.4396, -0.4780, -0.0483. Oznacza to, że czas do nawrotu choroby przy użyciu terapii hormonalnej jest dłuższy $e^{0.3339} = 1.4$ raza w porównaniu do sytuacji gdy nie jest stosowana terapia hormonalna, przy założeniu stałości pozostałych zmiennych. Czas do nawrotu choroby przy dodatnim wskaźniku progesteronu jest dłuższy $e^{0.4995} = 1.6$ raza w porównaniu do sytuacji, gdy pacjentka posiada ujemny wskaźnik poziomu progesteronu, przy założeniu stałości pozostałych zmiennych. Czas do nawrotu choroby przy średnim stopniu zróżnicowania komórek nowotworu jest krótszy $e^{-0.4396} = 0.64$ raza w porównaniu do sytuacji, gdy pacjentka posiada wysoki stopień zróżnicowania komórek nowotworu, przy założeniu stałości pozostałych zmiennych. Natomiast, gdy pacjentka posiada niski stopień zróżnicowania nowotworu, to czas do nawrotu choroby jest krótszy $e^{-0.4780} = 0.62$ raza w porównaniu do sytuacji gdy pacjentka posiada wysoki stopień zróżnicowania komórek nowotworu, przy założeniu stałości pozostałych zmiennych. Czas do nawrotu choroby przy wzroście liczby węzłów chłonnych \text{z przerzutami} nowotworu o jeden jest krótszy $e^{-0.0483} = 0.95$ raza, przy założeniu stałości pozostałych zmiennych.
 
 \newpage
 \textbf{Kody:} 
