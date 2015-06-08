@@ -1,0 +1,118 @@
+---
+output: 
+   pdf_document:
+      includes:
+         in_header: naglowek.tex
+      highlight: pygments
+      toc: false
+      number_sections: false
+      keep_tex: true
+---
+\thispagestyle{fancy}
+Analizie poddano pacjentów dotkniętych dwoma typami białaczki: ostrą i przewlekła. Dla pacjentów mierzono czas do wystąpienia jednego ze zdarzeń: czas do nawrotu choroby, czas do pojawienia się symptomów przewlekłego odrzutu przeszczepu oraz czas przeżycia. 
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+opts_chunk$set(comment="", message=FALSE, warning=FALSE, tidy.opts=list(keep.blank.line=TRUE, width.cutoff=120),options(width=120), cache=TRUE,fig.align='center',fig.height=6, fig.width=10,fig.path='figure/beamer-',fig.width=6, fig.height=3, fig.show='hold',size='footnotesize', echo=FALSE)
+```
+```{r, echo=FALSE}
+library(survival)
+dane <- read.csv("bmt.csv")
+
+dane.red <- data.frame(dane, event=ifelse(dane$first_e==0,0,1),
+                       odrzut=ifelse(dane$first_e==1,1,0), 
+                       nawrot=ifelse(dane$first_e==2,1,0),
+                       zgon=ifelse(dane$first_e==3,1,0))
+```
+
+Dla poszczególnych typów zdarzeń krzywe przeżycia Kaplana-Meiera wyglądają następująco:
+```{r, fig.width=6, fig.height=3}
+
+odrzut_KM <- survfit(Surv(first_t, first_e==1)~1, data = dane.red)
+nawrot_KM <- survfit(Surv(first_t, first_e==2)~1, data = dane.red)
+zgon_KM <- survfit(Surv(first_t, first_e==3)~1, data = dane.red)
+
+plot(odrzut_KM, mark.time=FALSE, conf.int=FALSE, col=2, xscale=1,
+     xlab=" ")
+lines(nawrot_KM, mark.time=FALSE, conf.int=FALSE, col=3)
+lines(zgon_KM, mark.time=FALSE, conf.int=FALSE, col=4)
+```
+Jednak te krzywe traktują inne zdarzenia jako cenzurowanie, dlatego sporządzono wykres sub-dystrybuant \textcolor{red}{który wygląda tak samo lol, tylko jest odwrotnoscia}.:
+```{r}
+ci <- survfit(Surv(first_t, first_e, type="mstate")~1,
+              data = dane.red)
+plot(ci, mark.time=FALSE, conf.int=FALSE,
+     col=c(2,3,4) , xscale=1,
+     xlab="Funkcje sub-dystrybunaty")
+```
+
+Oszacowania sub-dystrybuant można sprawdzić formalnie przy użyciu testu Graya:
+Dla metod pobierania komórek do przeszczepu:
+```{r}
+library(cmprsk)
+attach(dane.red)
+ci.trt <- cuminc(first_t, first_e, group=trt)
+ci.trt$Tests
+```
+Dla typu białaczki:
+```{r}
+ci.diag <- cuminc(first_t, first_e, group=diag)
+ci.diag$Tests
+```
+Z podsumowania testów widać, że zachodzą statystycznie istotne różnice w oszacowanych sub-dystrybuantach dla typu białaczki dla pierwszego typu zdarzenia czyli odrzutu. Można to również zaobserwować na poniższym wykresie prezentującym sub-dystyrbuanty z podziałem na typ białaczki
+
+```{r, fig.height=4, fig.width=5}
+
+ci.sfit <- survfit(Surv(first_t, event)~diag, etype=first_e, data=dane.red)
+plot(ci.sfit, lty=c(1,0,0,2,0,0), col=1:2, mark.time=F, conf.int=F, xscale=1, xlab="Sub-dystrybuanty dla odrzutów dla typu choroby.")
+text(2, 0.7,"Ostra, Odrzut", col=1)
+text(0.53, 0.85,"Przewlekla, Odrzut", col=2)
+```
+
+Widać, że oszacowana sub-dystrybuanta dla Ostrej białaczki jest poniżej oszacowanej sub-dystrybuanty dla Przewlekłego typu tej choroby, co oznacza, że pacjenci z Ostrą białaczką mają dłuższe czasy do zdarzenia jakim jest odrzut przeszczepu.
+
+Dla danych dotyczących wieku pacjenta, typu białaczki i metody pobrania komórek do przeszczepu dopasowujemy model PH dla funkcji hazardów 'specyficznych dla typów'. Podsumownia modeli dla typów: odrzut, nawrót, zgon, są poniżej.
+```{r}
+(coxph.odrzut <- 
+          coxph(Surv(first_t, first_e == 1) ~ diag+trt+age,
+                            data = dane.red))
+(coxph.nawrot <- 
+          coxph(Surv(first_t, first_e == 2) ~ diag+trt+age,
+                          data = dane.red))
+(coxph.zgon <- 
+          coxph(Surv(first_t, first_e == 3) ~ diag+trt+age,
+                          data = dane.red))
+```
+
+Na badanym, zakładanym poziomie istotności $\alpha=0.05$, statystycznie istotnie różny od 0 jest współczynnik przy zmiennej \textsf{diag} odpowiadającej typowi białaczki w modelu dla zdarzenia jakim jest nawrót choroby - wartość krytyczna testu wyniosła $0.047<0.05$. Białaczka przewlekła ma o 60\% większy hazard 'specyficzny dla typu' na odrzut. Dla pozostałych zmiennych dla tego typu zdarzenia oraz wszystkich zmiennych w pozostałych typach zdarzenia, nie ma statystycznie istotnych podstaw aby odrzucić hipotezę zerową mówiącą o tym, że współczynnik w modelu jest równy 0. \textcolor{red}{co jednak z tym testesm lajklihood ktory wyszedl nieistotny?}.
+
+
+Sporządzono również model hazardu sub-dystrybuanty, którego podsumowanie wygląda następująco
+```{r}
+attach(dane.red)
+
+model.matrix(~ diag+trt+age)[,-1] -> m.dane.red
+
+summary(mod.odrzut <- crr(ftime=first_t, 
+                        fstatus=first_e,
+                        cov1= m.dane.red,
+                        #cov2 = trt,
+                        failcode=1))
+#istotny wsolczynnik przy diag
+summary(mod.nawrot <- crr(ftime=first_t, 
+                          fstatus=first_e,
+                          cov1= m.dane.red,
+                          #cov2 = trt,
+                          failcode=2))
+#nieisitoene wszyststko
+summary(mod.zgon <- crr(ftime=first_t, 
+                          fstatus=first_e,
+                          cov1= m.dane.red,
+                          #cov2 = trt,
+                          failcode=3))
+```
+
+
+Podobnie w modelu hazardu dla sub-dystrybuanty, jedyną zmienną istotnie statystycznie różną od 0 jest zmienna \textsf{diag} dla modelu dla typu zdarzenia jakim jest nawrót, której wartość krytyczna testu $0.018<0.05$ jest mniejsza od zakładanego poziomu istonotści. Hazrad dla sub-dystrybuanty dla pacjenta z przewlekłą białaczką jest o 71,5 \% większy niż dla pacjenta z ostrą białaczką. Dla pozostałych zmiennych w tym modelu i dla wszystkich zmiennych w pozostałych modelach dla tych zmiennych nie ma statystycznie istotnych podstaw by odrzucić hipotezy zerowe o tym, że współczynniki są równe 0.
+
+
+\textcolor{red}{wg mnie powinnismy prezentowac tylko jeden model, albo tych hazardow specyficznych dla typu albo hazardow dla sub-dystrybuanty. dodatkowo mozna jeszcze dorobic ten test z podpunktu 8, ktorego wczesniej sie nie udalo zrobic, ale on jest tylko alternatywna dla testu Graya. a w ogole w sesji sas jest jeszcze jakas trzecia nazwa: 4. Model PH dla sub-hazardów}
