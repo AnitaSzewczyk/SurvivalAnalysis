@@ -116,3 +116,17 @@ Podobnie w modelu hazardu dla sub-dystrybuanty, jedyną zmienną istotnie statys
 
 
 \textcolor{red}{wg mnie powinnismy prezentowac tylko jeden model, albo tych hazardow specyficznych dla typu albo hazardow dla sub-dystrybuanty. dodatkowo mozna jeszcze dorobic ten test z podpunktu 8, ktorego wczesniej sie nie udalo zrobic, ale on jest tylko alternatywna dla testu Graya. a w ogole w sesji sas jest jeszcze jakas trzecia nazwa: 4. Model PH dla sub-hazardów}
+
+\textcolor{blue}{ooo i wlasnie nie mamy 12-tki: }
+```{r, echo=TRUE, eval=FALSE}
+
+#12. Konstruujemy oszacowania funkcji skumulowanych częstości odpowiadających modelowi PH dla #funkcji hazardu sub-dystrybuanty dla odrzutow
+odrzut.pred <- predict(mod.odrzut,cov1=rbind(0,1))
+plot(odrzut.pred,lty=1:2,color=1:2)
+text(0.6, .275, "WW, AIDS", col=1)
+text(0.8, .15, "WM, AIDS", col=2)
+```
+
+
+\newpage
+\textbf{Kody?}
