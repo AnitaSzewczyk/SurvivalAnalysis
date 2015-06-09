@@ -188,16 +188,64 @@ model.matrix(~ diag+trt+age)[,-1] -> m.dane.red
 
 Podobnie w modelu hazardu dla sub-dystrybuanty, jedyną zmienną istotnie statystycznie różną od 0 jest zmienna \textsf{diag} dla modelu dla typu zdarzenia jakim jest pojawienie się symptomów odrzutu przeszczepu, której wartość krytyczna testu $0.018<0.05$ jest mniejsza od zakładanego poziomu istotności. Hazard dla sub-dystrybuanty dla pacjenta z przewlekłą białaczką jest o 71,5 \% większy niż dla pacjenta z ostrą białaczką. Dla pozostałych zmiennych w tym modelu i dla wszystkich zmiennych w pozostałych modelach dla tych zmiennych nie ma statystycznie istotnych podstaw by odrzucić hipotezy zerowe o tym, że współczynniki są równe 0.
 
-\textcolor{blue}{ooo i wlasnie nie mamy 12-tki: }
-```{r, echo=T}
-
-#12. Konstruujemy oszacowania funkcji skumulowanych częstości odpowiadających modelowi PH dla #funkcji hazardu sub-dystrybuanty dla odrzutow
-odrzut.pred <- predict(mod.odrzut,cov1=rbind(0,1))
-plot(odrzut.pred,lty=1:4,color=1:4)
-text(0.6, .275, "WW, Odrzut", col=1)
-text(0.8, .15, "WM, Odrzut", col=2)
-```
-
-
 \newpage
-\textbf{Kody?}
+\small
+\textbf{Kody}
+```{r, eval=FALSE, echo=TRUE}
+library(survival)
+dane <- read.csv("bmt.csv")
+dane.red <- data.frame(dane, event=ifelse(dane$first_e==0,0,1),
+                       odrzut=ifelse(dane$first_e==1,1,0), 
+                       nawrot=ifelse(dane$first_e==2,1,0),
+                       zgon=ifelse(dane$first_e==3,1,0))
+library(cmprsk)
+attach(dane)
+ci.trt <- cuminc(first_t, first_e, group=trt) 
+plot(ci.trt, curvlab=c("Tradycyjna,Odrzut", 
+                       "Nowa,Odrzut",
+                       "Tradycyjna,Nawrot",
+                       "Nowa,Nawrot",
+                       "Tradycyjna,Zgon",
+                       "Nowa,Zgon"), col=c(1,1,2,2,3,3), wh=c(1.5,0.5),
+     lty = c(1,2,1,2,1,2))
+ci.diag <- cuminc(first_t, first_e, group=diag)
+plot(ci.diag, curvlab=c("Ostra,Odrzut", 
+                       "Przewlekla,Odrzut",
+                       "Ostra,Nawrot",
+                       "Przewlekla,Nawrot",
+                       "Ostra,Zgon",
+                       "Przewlekla,Zgon"),
+     col=c(1,1,2,2,3,3), lty = c(1,2,1,2,1,2), wh = c(1.5,0.5))
+library(cmprsk)
+attach(dane.red)
+ci.trt <- cuminc(first_t, first_e, group=trt)
+ci.trt$Tests
+ci.diag <- cuminc(first_t, first_e, group=diag)
+ci.diag$Tests
+ci.sfit <- survfit(Surv(first_t, event)~diag, etype=first_e, data=dane.red)
+plot(ci.sfit, lty=c(1,0,0,2,0,0), col=1:2, mark.time=F, conf.int=F, xscale=1, xlab="Sub-dystrybuanty dla odrzutów dla typu choroby.")
+text(2, 0.7,"Ostra, Odrzut", col=1)
+text(0.53, 0.85,"Przewlekla, Odrzut", col=2)
+print(coxph.odrzut <- 
+          coxph(Surv(first_t, first_e == 1) ~ diag+trt+age,
+                            data = dane.red))
+print(coxph.nawrot <- 
+          coxph(Surv(first_t, first_e == 2) ~ diag+trt+age,
+                          data = dane.red))
+print(coxph.zgon <- 
+          coxph(Surv(first_t, first_e == 3) ~ diag+trt+age,
+                          data = dane.red))
+model.matrix(~ diag+trt+age)[,-1] -> m.dane.red
+(mod.odrzut <- crr(ftime=first_t, fstatus=first_e,
+                        cov1= m.dane.red,
+                        #cov2 = trt,
+                        failcode=1))
+(mod.nawrot <- crr(ftime=first_t, fstatus=first_e,
+                          cov1= m.dane.red,
+                          #cov2 = trt,
+                          failcode=2))
+(mod.zgon <- crr(ftime=first_t, fstatus=first_e,
+                          cov1= m.dane.red,
+                          #cov2 = trt,
+                          failcode=3))
+```
