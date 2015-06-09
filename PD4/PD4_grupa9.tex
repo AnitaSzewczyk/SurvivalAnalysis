@@ -124,20 +124,20 @@
 \maketitle
 
 
-\thispagestyle{fancy} Analizie poddano pacjentów dotknietych dwoma
-typami bialaczki: ostra i przewlekla. Dla pacjentów mierzono czas do
-wystapienia pierwszego ze zdarzen: czas do nawrotu choroby, czas do
-pojawienia sie symptomów przewleklego odrzutu przeszczepu oraz czas
-przezycia.
+\thispagestyle{fancy} Analizie poddano pacjentów dotkniętych dwoma
+typami białaczki: ostrą i przewlekłą. Dla pacjentów mierzono czas do
+wystąpienia pierwszego ze zdarzeń: czas do nawrotu choroby, czas do
+pojawienia się symptomów przewlekłego odrzutu przeszczepu oraz czas
+przeżycia.
 
 \vspace{10pt}
 
 \textbf{Sub-dystrybuanty.}
 
-Chcac zbadac wplyw poszczególnych zmiennych dyskretnych na czas do
-wystapienia zdarzenia sporzadzono wykresy sub-dystrybuant. Dla
-poszczególnych typów zdarzen oszacowania sub-dystrybuant wygladaja
-nastepujaco:
+Chcąc zbadać wpływ poszczególnych zmiennych dyskretnych na czas do
+wystąpienia zdarzenia sporządzono wykresy sub-dystrybuant. Dla
+poszczególnych typów zdarzeń oszacowania sub-dystrybuant wyglądają
+następująco:
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -152,7 +152,7 @@ nastepujaco:
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  Dla typu bialaczki
+  Dla typu białaczki
 \end{itemize}
 
 \vspace{-22pt}
@@ -161,9 +161,9 @@ nastepujaco:
 
 \textbf{Test Graya}
 
-Formalnie przy uzyciu testu Graya mozna sprawdzic czy róznice w
-oszacowanych sub-dystrybuantach sa istotne statystycznie w podziale na
-podgrupy ze wzgledu na zmienne:
+Formalnie przy użyciu testu Graya można sprawdzić czy różnice w
+oszacowanych sub-dystrybuantach są istotne statystycznie w podziale na
+podgrupy ze względu na zmienne:
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -181,7 +181,7 @@ podgrupy ze wzgledu na zmienne:
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  Dla typu bialaczki:
+  Dla typu białaczki:
 \end{itemize}
 
 \begin{verbatim}
@@ -191,28 +191,28 @@ podgrupy ze wzgledu na zmienne:
 3 0.01090047 0.91684770  1
 \end{verbatim}
 
-Z podsumowania testów widac, ze zachodza statystycznie istotne róznice w
-oszacowanych sub-dystrybuantach dla typu bialaczki dla pierwszego typu
-zdarzenia czyli odrzutu, na zakladanym poziomie istotnosci
-\(\alpha=0.05\) (wartosc krytyczna testu jest równa \(0.02080048\)).
-Mozna to równiez zaobserwowac na ponizszym wykresie prezentujacym
-sub-dystrybuanty dla typu zdarzenia jakim jest odrzut, z podzialem na
-typ bialaczki
+Z podsumowania testów widać, że zachodzą statystycznie istotne różnice w
+oszacowanych sub-dystrybuantach dla typu białaczki dla pierwszego typu
+zdarzenia, czyli odrzutu, na zakładanym poziomie istotności
+$\alpha=0.05$ (wartość krytyczna testu jest równa $0.02080048$). Można
+to również zaobserwować na poniższym wykresie prezentującym
+sub-dystrybuanty dla typu zdarzenia jakim jest odrzut, z podziałem na
+typ białaczki.
 
 \begin{center}\includegraphics{figure/beamer-unnamed-chunk-8-1} \end{center}
 
-Widac, ze oszacowana sub-dystrybuanta dla \emph{ostrej} bialaczki jest
-ponizej oszacowanej sub-dystrybuanty dla \emph{przewleklego} typu tej
-choroby, co oznacza, ze pacjenci z \emph{ostra} bialaczka maja dluzsze
+Widać, że oszacowana sub-dystrybuanta dla \emph{ostrej} białaczki leży
+poniżej oszacowanej sub-dystrybuanty dla \emph{przewlekłego} typu tej
+choroby, co oznacza, że pacjenci z \emph{ostrą} białaczką mają dłuższe
 czasy do zdarzenia jakim jest odrzut przeszczepu.
 
 \newpage
 \textbf{Modele proporcjonalnych hazardów}
 
-Dla danych dotyczacych wieku pacjenta, typu bialaczki i metody pobrania
+Dla danych dotyczących wieku pacjenta, typu białaczki i metody pobrania
 komórek do przeszczepu dopasowujemy model PH dla funkcji hazardów
-`specyficznych dla typów'. Podsumownia modeli dla typów zdarzen: odrzut,
-nawrót, zgon, sa ponizej.
+`specyficznych dla typów'. Podsumownia modeli dla typów zdarzeń: odrzut,
+nawrót, zgon, zaprezentowano poniżej.
 
 \begin{verbatim}
 Call:
@@ -247,18 +247,18 @@ trt  -1.5046     0.222   1.1522 -1.306 0.190
 age   0.0973     1.102   0.0588  1.655 0.098
 \end{verbatim}
 
-Na badanym, zakladanym poziomie istotnosci \(\alpha=0.05\),
-statystycznie istotnie rózny od 0 jest wspólczynnik przy zmiennej
-\textsf{diag} odpowiadajacej typowi bialaczki w modelu dla zdarzenia
-jakim jest nawrót choroby - wartosc krytyczna testu wyniosla
-\(0.047<0.05\). Bialaczka przewlekla ma o 60\% wiekszy hazard
-`specyficzny dla typu' na odrzut. Dla pozostalych zmiennych dla tego
-typu zdarzenia oraz wszystkich zmiennych w pozostalych typach zdarzenia,
-nie ma statystycznie istotnych podstaw aby odrzucic hipoteze zerowa
-mówiaca o tym, ze wspólczynnik w modelu jest równy 0.
+Na badanym, zakładanym poziomie istotności $\alpha=0.05$, statystycznie
+istotnie różny od 0 jest współczynnik przy zmiennej \textsf{diag}
+odpowiadającej typowi białaczki w modelu dla zdarzenia jakim jest nawrót
+choroby -- wartość krytyczna testu wyniosła $0.047<0.05$. Białaczka
+przewlekła ma o 60\% większy hazard `specyficzny dla typu' jakim jest
+odrzut. Dla pozostałych zmiennych dla tego typu zdarzenia oraz
+wszystkich zmiennych \text{w pozostałych} typach zdarzenia, nie ma
+statystycznie istotnych podstaw, aby odrzucić hipotezę zerową mówiącą o
+tym, że współczynnik w modelu jest równy 0.
 
-Sporzadzono równiez model hazardu sub-dystrybuanty, którego podsumowanie
-wyglada nastepujaco
+Sporządzono również model hazardu sub-dystrybuanty, którego podsumowanie
+wygląda następująco:
 
 \begin{verbatim}
 convergence:  TRUE 
@@ -296,21 +296,21 @@ two-sided p-values:
 0.630 0.180 0.054 
 \end{verbatim}
 
-Podobnie w modelu hazardu dla sub-dystrybuanty, jedyna zmienna istotnie
-statystycznie rózna od 0 jest zmienna \textsf{diag} dla modelu dla typu
-zdarzenia jakim jest nawrót, której wartosc krytyczna testu
-\(0.018<0.05\) jest mniejsza od zakladanego poziomu istonotsci. Hazrad
-dla sub-dystrybuanty dla pacjenta z przewlekla bialaczka jest o 71,5 \%
-wiekszy niz dla pacjenta z ostra bialaczka. Dla pozostalych zmiennych w
-tym modelu i dla wszystkich zmiennych w pozostalych modelach dla tych
-zmiennych nie ma statystycznie istotnych podstaw by odrzucic hipotezy
-zerowe o tym, ze wspólczynniki sa równe 0.
+Podobnie w modelu hazardu dla sub-dystrybuanty, jedyną zmienną istotnie
+statystycznie różną od 0 jest zmienna \textsf{diag} dla modelu dla typu
+zdarzenia jakim jest nawrót, której wartość krytyczna testu $0.018<0.05$
+jest mniejsza od zakładanego poziomu istotności. Hazard dla
+sub-dystrybuanty dla pacjenta z przewlekłą białaczką jest o 71,5 \%
+większy niż dla pacjenta z ostrą białaczką. Dla pozostałych zmiennych w
+tym modelu i dla wszystkich zmiennych w pozostałych modelach dla tych
+zmiennych nie ma statystycznie istotnych podstaw by odrzucić hipotezy
+zerowe o tym, że współczynniki są równe 0.
 
 \textcolor{blue}{ooo i wlasnie nie mamy 12-tki: }
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#12. Konstruujemy oszacowania funkcji skumulowanych czestosci odpowiadajacych modelowi PH dla #funkcji hazardu sub-dystrybuanty dla odrzutow}
+\CommentTok{#12. Konstruujemy oszacowania funkcji skumulowanych częstości odpowiadających modelowi PH dla #funkcji hazardu sub-dystrybuanty dla odrzutow}
 \NormalTok{odrzut.pred <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(mod.odrzut,}\DataTypeTok{cov1=}\KeywordTok{rbind}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
 \KeywordTok{plot}\NormalTok{(odrzut.pred,}\DataTypeTok{lty=}\DecValTok{1}\NormalTok{:}\DecValTok{4}\NormalTok{,}\DataTypeTok{color=}\DecValTok{1}\NormalTok{:}\DecValTok{4}\NormalTok{)}
 \KeywordTok{text}\NormalTok{(}\FloatTok{0.6}\NormalTok{, .}\DecValTok{275}\NormalTok{, }\StringTok{"WW, Odrzut"}\NormalTok{, }\DataTypeTok{col=}\DecValTok{1}\NormalTok{)}
