@@ -158,7 +158,7 @@ print2(coxph.zgon <-
                           data = dane.red))
 ```
 
-Na badanym, zakładanym poziomie istotności $\alpha=0.05$, statystycznie istotnie różny od 0 jest współczynnik przy zmiennej \textsf{diag} odpowiadającej typowi białaczki w modelu dla zdarzenia jakim jest nawrót choroby -- wartość krytyczna testu wyniosła $0.047<0.05$. Białaczka przewlekła ma o 60\% większy hazard 'specyficzny dla typu' jakim jest odrzut. Dla pozostałych zmiennych dla tego typu zdarzenia oraz wszystkich zmiennych \text{w pozostałych} typach zdarzenia, nie ma statystycznie istotnych podstaw, aby odrzucić hipotezę zerową mówiącą o tym, że współczynnik w modelu jest równy 0.
+Na badanym, zakładanym poziomie istotności $\alpha=0.05$, statystycznie istotnie różny od 0 jest współczynnik przy zmiennej \textsf{diag} odpowiadającej typowi białaczki w modelu dla zdarzenia jakim jest wystąpienie symptomów odrzutu przeszczepu -- wartość krytyczna testu wyniosła $0.047<0.05$. Białaczka przewlekła ma o 60\% większy hazard 'specyficzny dla typu' zdarzenia jakim jest odrzut. Dla pozostałych zmiennych dla tego typu zdarzenia oraz wszystkich zmiennych \text{w pozostałych} typach zdarzenia, nie ma statystycznie istotnych podstaw, aby odrzucić hipotezę zerową mówiącą o tym, że współczynnik w modelu jest równy 0.
 
 Sporządzono również model hazardu sub-dystrybuanty, którego podsumowanie wygląda następująco:
 ```{r}
@@ -186,7 +186,7 @@ model.matrix(~ diag+trt+age)[,-1] -> m.dane.red
 ```
 
 
-Podobnie w modelu hazardu dla sub-dystrybuanty, jedyną zmienną istotnie statystycznie różną od 0 jest zmienna \textsf{diag} dla modelu dla typu zdarzenia jakim jest nawrót, której wartość krytyczna testu $0.018<0.05$ jest mniejsza od zakładanego poziomu istotności. Hazard dla sub-dystrybuanty dla pacjenta z przewlekłą białaczką jest o 71,5 \% większy niż dla pacjenta z ostrą białaczką. Dla pozostałych zmiennych w tym modelu i dla wszystkich zmiennych w pozostałych modelach dla tych zmiennych nie ma statystycznie istotnych podstaw by odrzucić hipotezy zerowe o tym, że współczynniki są równe 0.
+Podobnie w modelu hazardu dla sub-dystrybuanty, jedyną zmienną istotnie statystycznie różną od 0 jest zmienna \textsf{diag} dla modelu dla typu zdarzenia jakim jest pojawienie się symptomów odrzutu przeszczepu, której wartość krytyczna testu $0.018<0.05$ jest mniejsza od zakładanego poziomu istotności. Hazard dla sub-dystrybuanty dla pacjenta z przewlekłą białaczką jest o 71,5 \% większy niż dla pacjenta z ostrą białaczką. Dla pozostałych zmiennych w tym modelu i dla wszystkich zmiennych w pozostałych modelach dla tych zmiennych nie ma statystycznie istotnych podstaw by odrzucić hipotezy zerowe o tym, że współczynniki są równe 0.
 
 \textcolor{blue}{ooo i wlasnie nie mamy 12-tki: }
 ```{r, echo=T}
