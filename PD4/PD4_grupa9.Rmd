@@ -9,11 +9,54 @@ output:
       keep_tex: true
 ---
 \thispagestyle{fancy}
-Analizie poddano pacjentów dotkniętych dwoma typami białaczki: ostrą i przewlekła. Dla pacjentów mierzono czas do wystąpienia jednego ze zdarzeń: czas do nawrotu choroby, czas do pojawienia się symptomów przewlekłego odrzutu przeszczepu oraz czas przeżycia. 
+Analizie poddano pacjentów dotkniętych dwoma typami białaczki: ostrą i przewlekła. Dla pacjentów mierzono czas do wystąpienia pierwszego ze zdarzeń: czas do nawrotu choroby, czas do pojawienia się symptomów przewlekłego odrzutu przeszczepu oraz czas przeżycia. 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(knitr)
-opts_chunk$set(comment="", message=FALSE, warning=FALSE, tidy.opts=list(keep.blank.line=TRUE, width.cutoff=120),options(width=120), cache=TRUE,fig.align='center',fig.height=6, fig.width=10,fig.path='figure/beamer-',fig.width=6, fig.height=3, fig.show='hold',size='footnotesize', echo=FALSE)
+opts_chunk$set(comment="", message=FALSE, warning=FALSE, tidy.opts=list(keep.blank.line=TRUE, width.cutoff=120),options(width=120),fig.align='center',fig.height=6, fig.width=10,fig.path='figure/beamer-',fig.width=6, fig.height=3, fig.show='hold',size='footnotesize', echo=FALSE)
 ```
+
+```{r}
+print2 <- function (x, digits = max(options()$digits - 4, 3), ...) {
+    if (!is.null(cl <- x$call)) {
+        cat("Call:\n")
+        dput(cl)
+        cat("\n")
+    }
+    if (!is.null(x$fail)) {
+        cat(" Coxph failed.", x$fail, "\n")
+        return()
+    }
+    savedig <- options(digits = digits)
+    on.exit(options(savedig))
+    coef <- x$coefficients
+    se <- sqrt(diag(x$var))
+    if (is.null(coef) | is.null(se)) 
+        stop("Input is not valid")
+    if (is.null(x$naive.var)) {
+        tmp <- cbind(coef, exp(coef), se, coef/se, signif(1 - 
+            pchisq((coef/se)^2, 1), digits - 1))
+        dimnames(tmp) <- list(names(coef), c("coef", "exp(coef)", 
+            "se(coef)", "z", "p"))
+    }
+    else {
+        nse <- sqrt(diag(x$naive.var))
+        tmp <- cbind(coef, exp(coef), nse, se, coef/se, signif(1 - 
+            pchisq((coef/se)^2, 1), digits - 1))
+        dimnames(tmp) <- list(names(coef), c("coef", "exp(coef)", 
+            "se(coef)", "robust se", "z", "p"))
+    }
+    cat("\n")
+    print(tmp)
+    logtest <- -2 * (x$loglik[1] - x$loglik[2])
+    if (is.null(x$df)) 
+        df <- sum(!is.na(coef))
+    else df <- round(sum(x$df), 2)
+    cat("\n")
+    invisible(x)
+}
+```
+
+
 ```{r, echo=FALSE}
 library(survival)
 dane <- read.csv("bmt.csv")
@@ -24,41 +67,70 @@ dane.red <- data.frame(dane, event=ifelse(dane$first_e==0,0,1),
                        zgon=ifelse(dane$first_e==3,1,0))
 ```
 
-Dla poszczególnych typów zdarzeń krzywe przeżycia Kaplana-Meiera wyglądają następująco:
-```{r, fig.width=6, fig.height=3}
+\vspace{10pt}
+\textbf{Sub-dystrybuanty.}
 
-odrzut_KM <- survfit(Surv(first_t, first_e==1)~1, data = dane.red)
-nawrot_KM <- survfit(Surv(first_t, first_e==2)~1, data = dane.red)
-zgon_KM <- survfit(Surv(first_t, first_e==3)~1, data = dane.red)
+Chcąc zbadać wpływ poszczególnych zmiennych dyskretnych na czas do wystąpienia zdarzenia sporządzono wykresy sub-dystrybuant. Dla poszczególnych typów zdarzeń oszacowania sub-dystrybuant wyglądają następująco:
 
-plot(odrzut_KM, mark.time=FALSE, conf.int=FALSE, col=2, xscale=1,
-     xlab=" ")
-lines(nawrot_KM, mark.time=FALSE, conf.int=FALSE, col=3)
-lines(zgon_KM, mark.time=FALSE, conf.int=FALSE, col=4)
+- Dla metody pobierania komórek do przeszczepu
+
+```{r, fig.width=8, fig.height=5, echo=FALSE, warning=FALSE, results='hide', message=FALSE}
+library(cmprsk)
+attach(dane)
+ci.trt <- cuminc(first_t, first_e, group=trt) 
+pdf(file = "plot1.pdf")
+plot(ci.trt, curvlab=c("Tradycyjna,Odrzut", 
+                       "Nowa,Odrzut",
+                       "Tradycyjna,Nawrot",
+                       "Nowa,Nawrot",
+                       "Tradycyjna,Zgon",
+                       "Nowa,Zgon"), col=c(1,1,2,2,3,3), wh=c(1.5,0.5),
+     lty = c(1,2,1,2,1,2))
+dev.off()
 ```
-Jednak te krzywe traktują inne zdarzenia jako cenzurowanie, dlatego sporządzono wykres sub-dystrybuant \textcolor{red}{który wygląda tak samo lol, tylko jest odwrotnoscia}.:
-```{r}
-ci <- survfit(Surv(first_t, first_e, type="mstate")~1,
-              data = dane.red)
-plot(ci, mark.time=FALSE, conf.int=FALSE,
-     col=c(2,3,4) , xscale=1,
-     xlab="Funkcje sub-dystrybunaty")
-```
+\vspace{-22pt}
+\includegraphics[width=16cm,height=8.2cm]{plot1.pdf}
 
-Oszacowania sub-dystrybuant można sprawdzić formalnie przy użyciu testu Graya:
-Dla metod pobierania komórek do przeszczepu:
+- Dla typu białaczki
+
+```{r, fig.width=8, fig.height=5, echo=FALSE, warning=FALSE, results='hide', message=FALSE}
+
+ci.diag <- cuminc(first_t, first_e, group=diag)
+pdf(file = "plot2.pdf")
+plot(ci.diag, curvlab=c("Ostra,Odrzut", 
+                       "Przewlekla,Odrzut",
+                       "Ostra,Nawrot",
+                       "Przewlekla,Nawrot",
+                       "Ostra,Zgon",
+                       "Przewlekla,Zgon"),
+     col=c(1,1,2,2,3,3), lty = c(1,2,1,2,1,2), wh = c(1.5,0.5))
+dev.off()
+```
+\vspace{-22pt}
+\includegraphics[width=16cm,height=8.2cm]{plot2.pdf}
+\newpage
+
+\textbf{Test Graya}
+
+Formalnie przy użyciu testu Graya można sprawdzić czy różnice w oszacowanych sub-dystrybuantach są istotne statystycznie w podziale na podgrupy ze względu na zmienne:
+
+- Dla metod pobierania komórek do przeszczepu:
+
 ```{r}
 library(cmprsk)
 attach(dane.red)
 ci.trt <- cuminc(first_t, first_e, group=trt)
 ci.trt$Tests
 ```
-Dla typu białaczki:
+
+- Dla typu białaczki:
+
 ```{r}
 ci.diag <- cuminc(first_t, first_e, group=diag)
 ci.diag$Tests
 ```
-Z podsumowania testów widać, że zachodzą statystycznie istotne różnice w oszacowanych sub-dystrybuantach dla typu białaczki dla pierwszego typu zdarzenia czyli odrzutu. Można to również zaobserwować na poniższym wykresie prezentującym sub-dystyrbuanty z podziałem na typ białaczki
+
+Z podsumowania testów widać, że zachodzą statystycznie istotne różnice w oszacowanych sub-dystrybuantach dla typu białaczki dla pierwszego typu zdarzenia czyli odrzutu, na zakładanym poziomie istotności $\alpha=0.05$ (wartość krytyczna testu jest równa $0.02080048$). Można to również zaobserwować na poniższym wykresie prezentującym sub-dystrybuanty dla typu zdarzenia jakim jest odrzut, z podziałem na typ białaczki
 
 ```{r, fig.height=4, fig.width=5}
 
@@ -68,23 +140,25 @@ text(2, 0.7,"Ostra, Odrzut", col=1)
 text(0.53, 0.85,"Przewlekla, Odrzut", col=2)
 ```
 
-Widać, że oszacowana sub-dystrybuanta dla Ostrej białaczki jest poniżej oszacowanej sub-dystrybuanty dla Przewlekłego typu tej choroby, co oznacza, że pacjenci z Ostrą białaczką mają dłuższe czasy do zdarzenia jakim jest odrzut przeszczepu.
+Widać, że oszacowana sub-dystrybuanta dla *ostrej* białaczki jest poniżej oszacowanej sub-dystrybuanty dla *przewlekłego* typu tej choroby, co oznacza, że pacjenci z *ostrą* białaczką mają dłuższe czasy do zdarzenia jakim jest odrzut przeszczepu.
 
-Dla danych dotyczących wieku pacjenta, typu białaczki i metody pobrania komórek do przeszczepu dopasowujemy model PH dla funkcji hazardów 'specyficznych dla typów'. Podsumownia modeli dla typów: odrzut, nawrót, zgon, są poniżej.
+\newpage
+\textbf{Modele proporcjonalnych hazardów}
+
+Dla danych dotyczących wieku pacjenta, typu białaczki i metody pobrania komórek do przeszczepu dopasowujemy model PH dla funkcji hazardów 'specyficznych dla typów'. Podsumownia modeli dla typów zdarzeń: odrzut, nawrót, zgon, są poniżej.
 ```{r}
-(coxph.odrzut <- 
+print2(coxph.odrzut <- 
           coxph(Surv(first_t, first_e == 1) ~ diag+trt+age,
                             data = dane.red))
-(coxph.nawrot <- 
+print2(coxph.nawrot <- 
           coxph(Surv(first_t, first_e == 2) ~ diag+trt+age,
                           data = dane.red))
-(coxph.zgon <- 
+print2(coxph.zgon <- 
           coxph(Surv(first_t, first_e == 3) ~ diag+trt+age,
                           data = dane.red))
 ```
 
-Na badanym, zakładanym poziomie istotności $\alpha=0.05$, statystycznie istotnie różny od 0 jest współczynnik przy zmiennej \textsf{diag} odpowiadającej typowi białaczki w modelu dla zdarzenia jakim jest nawrót choroby - wartość krytyczna testu wyniosła $0.047<0.05$. Białaczka przewlekła ma o 60\% większy hazard 'specyficzny dla typu' na odrzut. Dla pozostałych zmiennych dla tego typu zdarzenia oraz wszystkich zmiennych w pozostałych typach zdarzenia, nie ma statystycznie istotnych podstaw aby odrzucić hipotezę zerową mówiącą o tym, że współczynnik w modelu jest równy 0. \textcolor{red}{co jednak z tym testesm lajklihood ktory wyszedl nieistotny?}.
-
+Na badanym, zakładanym poziomie istotności $\alpha=0.05$, statystycznie istotnie różny od 0 jest współczynnik przy zmiennej \textsf{diag} odpowiadającej typowi białaczki w modelu dla zdarzenia jakim jest nawrót choroby - wartość krytyczna testu wyniosła $0.047<0.05$. Białaczka przewlekła ma o 60\% większy hazard 'specyficzny dla typu' na odrzut. Dla pozostałych zmiennych dla tego typu zdarzenia oraz wszystkich zmiennych w pozostałych typach zdarzenia, nie ma statystycznie istotnych podstaw aby odrzucić hipotezę zerową mówiącą o tym, że współczynnik w modelu jest równy 0.
 
 Sporządzono również model hazardu sub-dystrybuanty, którego podsumowanie wygląda następująco
 ```{r}
@@ -92,19 +166,19 @@ attach(dane.red)
 
 model.matrix(~ diag+trt+age)[,-1] -> m.dane.red
 
-summary(mod.odrzut <- crr(ftime=first_t, 
+(mod.odrzut <- crr(ftime=first_t, 
                         fstatus=first_e,
                         cov1= m.dane.red,
                         #cov2 = trt,
                         failcode=1))
 #istotny wsolczynnik przy diag
-summary(mod.nawrot <- crr(ftime=first_t, 
+(mod.nawrot <- crr(ftime=first_t, 
                           fstatus=first_e,
                           cov1= m.dane.red,
                           #cov2 = trt,
                           failcode=2))
 #nieisitoene wszyststko
-summary(mod.zgon <- crr(ftime=first_t, 
+(mod.zgon <- crr(ftime=first_t, 
                           fstatus=first_e,
                           cov1= m.dane.red,
                           #cov2 = trt,
@@ -114,17 +188,14 @@ summary(mod.zgon <- crr(ftime=first_t,
 
 Podobnie w modelu hazardu dla sub-dystrybuanty, jedyną zmienną istotnie statystycznie różną od 0 jest zmienna \textsf{diag} dla modelu dla typu zdarzenia jakim jest nawrót, której wartość krytyczna testu $0.018<0.05$ jest mniejsza od zakładanego poziomu istonotści. Hazrad dla sub-dystrybuanty dla pacjenta z przewlekłą białaczką jest o 71,5 \% większy niż dla pacjenta z ostrą białaczką. Dla pozostałych zmiennych w tym modelu i dla wszystkich zmiennych w pozostałych modelach dla tych zmiennych nie ma statystycznie istotnych podstaw by odrzucić hipotezy zerowe o tym, że współczynniki są równe 0.
 
-
-\textcolor{red}{wg mnie powinnismy prezentowac tylko jeden model, albo tych hazardow specyficznych dla typu albo hazardow dla sub-dystrybuanty. dodatkowo mozna jeszcze dorobic ten test z podpunktu 8, ktorego wczesniej sie nie udalo zrobic, ale on jest tylko alternatywna dla testu Graya. a w ogole w sesji sas jest jeszcze jakas trzecia nazwa: 4. Model PH dla sub-hazardów}
-
 \textcolor{blue}{ooo i wlasnie nie mamy 12-tki: }
-```{r, echo=TRUE, eval=FALSE}
+```{r, echo=T}
 
 #12. Konstruujemy oszacowania funkcji skumulowanych częstości odpowiadających modelowi PH dla #funkcji hazardu sub-dystrybuanty dla odrzutow
 odrzut.pred <- predict(mod.odrzut,cov1=rbind(0,1))
-plot(odrzut.pred,lty=1:2,color=1:2)
-text(0.6, .275, "WW, AIDS", col=1)
-text(0.8, .15, "WM, AIDS", col=2)
+plot(odrzut.pred,lty=1:4,color=1:4)
+text(0.6, .275, "WW, Odrzut", col=1)
+text(0.8, .15, "WM, Odrzut", col=2)
 ```
 
 
