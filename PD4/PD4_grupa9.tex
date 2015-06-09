@@ -308,21 +308,70 @@ zmiennych w pozostałych modelach dla tych zmiennych nie ma statystycznie
 istotnych podstaw by odrzucić hipotezy zerowe o tym, że współczynniki są
 równe 0.
 
-\textcolor{blue}{ooo i wlasnie nie mamy 12-tki: }
+\newpage
+\small
+\textbf{Kody}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#12. Konstruujemy oszacowania funkcji skumulowanych częstości odpowiadających modelowi PH dla #funkcji hazardu sub-dystrybuanty dla odrzutow}
-\NormalTok{odrzut.pred <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(mod.odrzut,}\DataTypeTok{cov1=}\KeywordTok{rbind}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(odrzut.pred,}\DataTypeTok{lty=}\DecValTok{1}\NormalTok{:}\DecValTok{4}\NormalTok{,}\DataTypeTok{color=}\DecValTok{1}\NormalTok{:}\DecValTok{4}\NormalTok{)}
-\KeywordTok{text}\NormalTok{(}\FloatTok{0.6}\NormalTok{, .}\DecValTok{275}\NormalTok{, }\StringTok{"WW, Odrzut"}\NormalTok{, }\DataTypeTok{col=}\DecValTok{1}\NormalTok{)}
-\KeywordTok{text}\NormalTok{(}\FloatTok{0.8}\NormalTok{, .}\DecValTok{15}\NormalTok{, }\StringTok{"WM, Odrzut"}\NormalTok{, }\DataTypeTok{col=}\DecValTok{2}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(survival)}
+\NormalTok{dane <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"bmt.csv"}\NormalTok{)}
+\NormalTok{dane.red <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(dane, }\DataTypeTok{event=}\KeywordTok{ifelse}\NormalTok{(dane$first_e==}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{),}
+                       \DataTypeTok{odrzut=}\KeywordTok{ifelse}\NormalTok{(dane$first_e==}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{), }
+                       \DataTypeTok{nawrot=}\KeywordTok{ifelse}\NormalTok{(dane$first_e==}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{),}
+                       \DataTypeTok{zgon=}\KeywordTok{ifelse}\NormalTok{(dane$first_e==}\DecValTok{3}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\KeywordTok{library}\NormalTok{(cmprsk)}
+\KeywordTok{attach}\NormalTok{(dane)}
+\NormalTok{ci.trt <-}\StringTok{ }\KeywordTok{cuminc}\NormalTok{(first_t, first_e, }\DataTypeTok{group=}\NormalTok{trt) }
+\KeywordTok{plot}\NormalTok{(ci.trt, }\DataTypeTok{curvlab=}\KeywordTok{c}\NormalTok{(}\StringTok{"Tradycyjna,Odrzut"}\NormalTok{, }
+                       \StringTok{"Nowa,Odrzut"}\NormalTok{,}
+                       \StringTok{"Tradycyjna,Nawrot"}\NormalTok{,}
+                       \StringTok{"Nowa,Nawrot"}\NormalTok{,}
+                       \StringTok{"Tradycyjna,Zgon"}\NormalTok{,}
+                       \StringTok{"Nowa,Zgon"}\NormalTok{), }\DataTypeTok{col=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{3}\NormalTok{), }\DataTypeTok{wh=}\KeywordTok{c}\NormalTok{(}\FloatTok{1.5}\NormalTok{,}\FloatTok{0.5}\NormalTok{),}
+     \DataTypeTok{lty =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\NormalTok{ci.diag <-}\StringTok{ }\KeywordTok{cuminc}\NormalTok{(first_t, first_e, }\DataTypeTok{group=}\NormalTok{diag)}
+\KeywordTok{plot}\NormalTok{(ci.diag, }\DataTypeTok{curvlab=}\KeywordTok{c}\NormalTok{(}\StringTok{"Ostra,Odrzut"}\NormalTok{, }
+                       \StringTok{"Przewlekla,Odrzut"}\NormalTok{,}
+                       \StringTok{"Ostra,Nawrot"}\NormalTok{,}
+                       \StringTok{"Przewlekla,Nawrot"}\NormalTok{,}
+                       \StringTok{"Ostra,Zgon"}\NormalTok{,}
+                       \StringTok{"Przewlekla,Zgon"}\NormalTok{),}
+     \DataTypeTok{col=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{3}\NormalTok{), }\DataTypeTok{lty =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), }\DataTypeTok{wh =} \KeywordTok{c}\NormalTok{(}\FloatTok{1.5}\NormalTok{,}\FloatTok{0.5}\NormalTok{))}
+\KeywordTok{library}\NormalTok{(cmprsk)}
+\KeywordTok{attach}\NormalTok{(dane.red)}
+\NormalTok{ci.trt <-}\StringTok{ }\KeywordTok{cuminc}\NormalTok{(first_t, first_e, }\DataTypeTok{group=}\NormalTok{trt)}
+\NormalTok{ci.trt$Tests}
+\NormalTok{ci.diag <-}\StringTok{ }\KeywordTok{cuminc}\NormalTok{(first_t, first_e, }\DataTypeTok{group=}\NormalTok{diag)}
+\NormalTok{ci.diag$Tests}
+\NormalTok{ci.sfit <-}\StringTok{ }\KeywordTok{survfit}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(first_t, event)~diag, }\DataTypeTok{etype=}\NormalTok{first_e, }\DataTypeTok{data=}\NormalTok{dane.red)}
+\KeywordTok{plot}\NormalTok{(ci.sfit, }\DataTypeTok{lty=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{), }\DataTypeTok{col=}\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{, }\DataTypeTok{mark.time=}\NormalTok{F, }\DataTypeTok{conf.int=}\NormalTok{F, }\DataTypeTok{xscale=}\DecValTok{1}\NormalTok{, }
+     \DataTypeTok{xlab=}\StringTok{"Sub-dystrybuanty dla odrzutów dla typu choroby."}\NormalTok{)}
+\KeywordTok{text}\NormalTok{(}\DecValTok{2}\NormalTok{, }\FloatTok{0.7}\NormalTok{,}\StringTok{"Ostra, Odrzut"}\NormalTok{, }\DataTypeTok{col=}\DecValTok{1}\NormalTok{)}
+\KeywordTok{text}\NormalTok{(}\FloatTok{0.53}\NormalTok{, }\FloatTok{0.85}\NormalTok{,}\StringTok{"Przewlekla, Odrzut"}\NormalTok{, }\DataTypeTok{col=}\DecValTok{2}\NormalTok{)}
+\KeywordTok{print}\NormalTok{(coxph.odrzut <-}\StringTok{ }
+\StringTok{          }\KeywordTok{coxph}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(first_t, first_e ==}\StringTok{ }\DecValTok{1}\NormalTok{) ~}\StringTok{ }\NormalTok{diag+trt+age,}
+                            \DataTypeTok{data =} \NormalTok{dane.red))}
+\KeywordTok{print}\NormalTok{(coxph.nawrot <-}\StringTok{ }
+\StringTok{          }\KeywordTok{coxph}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(first_t, first_e ==}\StringTok{ }\DecValTok{2}\NormalTok{) ~}\StringTok{ }\NormalTok{diag+trt+age,}
+                          \DataTypeTok{data =} \NormalTok{dane.red))}
+\KeywordTok{print}\NormalTok{(coxph.zgon <-}\StringTok{ }
+\StringTok{          }\KeywordTok{coxph}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(first_t, first_e ==}\StringTok{ }\DecValTok{3}\NormalTok{) ~}\StringTok{ }\NormalTok{diag+trt+age,}
+                          \DataTypeTok{data =} \NormalTok{dane.red))}
+\KeywordTok{model.matrix}\NormalTok{(~}\StringTok{ }\NormalTok{diag+trt+age)[,-}\DecValTok{1}\NormalTok{] ->}\StringTok{ }\NormalTok{m.dane.red}
+\NormalTok{(mod.odrzut <-}\StringTok{ }\KeywordTok{crr}\NormalTok{(}\DataTypeTok{ftime=}\NormalTok{first_t, }\DataTypeTok{fstatus=}\NormalTok{first_e,}
+                        \DataTypeTok{cov1=} \NormalTok{m.dane.red,}
+                        \CommentTok{#cov2 = trt,}
+                        \DataTypeTok{failcode=}\DecValTok{1}\NormalTok{))}
+\NormalTok{(mod.nawrot <-}\StringTok{ }\KeywordTok{crr}\NormalTok{(}\DataTypeTok{ftime=}\NormalTok{first_t, }\DataTypeTok{fstatus=}\NormalTok{first_e,}
+                          \DataTypeTok{cov1=} \NormalTok{m.dane.red,}
+                          \CommentTok{#cov2 = trt,}
+                          \DataTypeTok{failcode=}\DecValTok{2}\NormalTok{))}
+\NormalTok{(mod.zgon <-}\StringTok{ }\KeywordTok{crr}\NormalTok{(}\DataTypeTok{ftime=}\NormalTok{first_t, }\DataTypeTok{fstatus=}\NormalTok{first_e,}
+                          \DataTypeTok{cov1=} \NormalTok{m.dane.red,}
+                          \CommentTok{#cov2 = trt,}
+                          \DataTypeTok{failcode=}\DecValTok{3}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{center}\includegraphics{figure/beamer-unnamed-chunk-11-1} \end{center}
-
-\newpage
-\textbf{Kody?}
 
 \end{document}

@@ -223,7 +223,8 @@ ci.trt$Tests
 ci.diag <- cuminc(first_t, first_e, group=diag)
 ci.diag$Tests
 ci.sfit <- survfit(Surv(first_t, event)~diag, etype=first_e, data=dane.red)
-plot(ci.sfit, lty=c(1,0,0,2,0,0), col=1:2, mark.time=F, conf.int=F, xscale=1, xlab="Sub-dystrybuanty dla odrzutów dla typu choroby.")
+plot(ci.sfit, lty=c(1,0,0,2,0,0), col=1:2, mark.time=F, conf.int=F, xscale=1, 
+     xlab="Sub-dystrybuanty dla odrzutów dla typu choroby.")
 text(2, 0.7,"Ostra, Odrzut", col=1)
 text(0.53, 0.85,"Przewlekla, Odrzut", col=2)
 print(coxph.odrzut <- 
