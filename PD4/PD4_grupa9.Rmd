@@ -10,6 +10,8 @@ output:
 ---
 \thispagestyle{fancy}
 Analizie poddano pacjentów dotkniętych dwoma typami białaczki: ostrą i przewlekłą. Dla pacjentów mierzono czas do wystąpienia pierwszego ze zdarzeń: czas do nawrotu choroby, czas do pojawienia się symptomów przewlekłego odrzutu przeszczepu oraz czas przeżycia. 
+
+test
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(knitr)
 opts_chunk$set(comment="", message=FALSE, warning=FALSE, tidy.opts=list(keep.blank.line=TRUE, width.cutoff=120),options(width=120),fig.align='center',fig.height=6, fig.width=10,fig.path='figure/beamer-',fig.width=6, fig.height=3, fig.show='hold',size='footnotesize', echo=FALSE)
