@@ -101,11 +101,11 @@ dev.off()
 ci.diag <- cuminc(first_t, first_e, group=diag)
 pdf(file = "plot2.pdf")
 plot(ci.diag, curvlab=c("Ostra,Odrzut", 
-                       "Przewlekła,Odrzut",
+                       "Przewlekla,Odrzut",
                        "Ostra,Nawrot",
-                       "Przewlekła,Nawrot",
+                       "Przewlekla,Nawrot",
                        "Ostra,Zgon",
-                       "Przewlekła,Zgon"),
+                       "Przewlekla,Zgon"),
      col=c(1,1,2,2,3,3), lty = c(1,2,1,2,1,2), wh = c(1.5,0.5))
 dev.off()
 ```
@@ -140,7 +140,7 @@ Z podsumowania testów widać, że zachodzą jedynie statystycznie istotne róż
 ci.sfit <- survfit(Surv(first_t, event)~diag, etype=first_e, data=dane.red)
 plot(ci.sfit, lty=c(1,0,0,2,0,0), col=1:2, mark.time=F, conf.int=F, xscale=1, xlab="Sub-dystrybuanty dla odrzutów dla typu choroby.")
 text(2, 0.7,"Ostra, Odrzut", col=1)
-text(0.53, 0.85,"Przewlekła, Odrzut", col=2)
+text(0.53, 0.85,"Przewlekla, Odrzut", col=2)
 ```
 
 Widać, że oszacowana sub-dystrybuanta dla *ostrej* białaczki leży poniżej oszacowanej sub-dystrybuanty dla *przewlekłego* typu tej choroby, co oznacza, że pacjenci z *ostrą* białaczką mają dłuższe czasy do zdarzenia jakim jest odrzut przeszczepu.
