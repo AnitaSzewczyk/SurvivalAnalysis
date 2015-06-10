@@ -55,7 +55,7 @@
 \hypersetup{breaklinks=true,
             bookmarks=true,
             pdfauthor={},
-            pdftitle={},
+            pdftitle={Porównanie metod pobierania komórek do przeszczepu},
             colorlinks=true,
             citecolor=blue,
             urlcolor=blue,
@@ -74,9 +74,9 @@
 %%% Change title format to be more compact
 \usepackage{titling}
 \setlength{\droptitle}{-2em}
-  \title{}
-  \pretitle{\vspace{\droptitle}}
-  \posttitle{}
+  \title{Porównanie metod pobierania komórek do przeszczepu}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
   \author{}
   \preauthor{}\postauthor{}
   \date{}
@@ -117,13 +117,16 @@
 \maketitle
 
 
-\thispagestyle{fancy} Analizie poddano pacjentów dotkniętych dwoma
-typami białaczki: ostrą i przewlekłą. Dla pacjentów mierzono czas do
+\thispagestyle{fancy}
+
+Głownym celem było porównanie dwóch metod pobierania komórek do
+przeszczepu. Tradycyjna, bardziej inwazyjna polega na pobraniu z kości
+miednicy, oraz mniej inwazyjna, czyli pobieranie szpiku z krwi
+obwodowej. Analizie poddano pacjentów dotkniętych dwoma typami
+białaczki: ostrą i przewlekłą. Dla pacjentów mierzono czas do
 wystąpienia pierwszego ze zdarzeń: czas do nawrotu choroby, czas do
 pojawienia się symptomów przewlekłego odrzutu przeszczepu oraz czas
-przeżycia.
-
-test
+przeżycia (do zgonu).
 
 \vspace{10pt}
 
@@ -142,7 +145,7 @@ następująco:
 
 \vspace{-22pt}
 
-\includegraphics[width=16cm,height=8.2cm]{plot1.pdf}
+\includegraphics[width=16cm,height=7.2cm]{plot1.pdf}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -186,13 +189,13 @@ podgrupy ze względu na zmienne:
 3 0.01090047 0.91684770  1
 \end{verbatim}
 
-Z podsumowania testów widać, że zachodzą statystycznie istotne różnice w
-oszacowanych sub-dystrybuantach dla typu białaczki dla pierwszego typu
-zdarzenia, czyli odrzutu, na zakładanym poziomie istotności
-\(\alpha=0.05\) (wartość krytyczna testu jest równa \(0.02080048\)).
-Można to również zaobserwować na poniższym wykresie prezentującym
-sub-dystrybuanty dla typu zdarzenia jakim jest odrzut, z podziałem na
-typ białaczki.
+Z podsumowania testów widać, że zachodzą jedynie statystycznie istotne
+różnice w oszacowanych sub-dystrybuantach dla typu białaczki dla
+pierwszego typu zdarzenia, czyli odrzutu, na zakładanym poziomie
+istotności \(\alpha=0.05\) (wartość krytyczna testu jest równa
+\(0.02080048\)). Można to również zaobserwować na poniższym wykresie
+prezentującym sub-dystrybuanty dla typu zdarzenia jakim jest odrzut, z
+podziałem na typ białaczki.
 
 \begin{center}\includegraphics{figure/beamer-unnamed-chunk-8-1} \end{center}
 
@@ -319,7 +322,13 @@ tej podstawie stwierdzamy, że jedyną istotną zmienną jest typ białaczki,
 gdy rozpatrujemy zdarzenie odrzutu przeszczepu. Zmienna ta oraz
 pozostałe, w modelach dla zdarzeń jakimi są nawrót oraz zgon, mogły
 okazać się nieistotne statystycznie z powodu zbyt małej liczby zdarzeń
-tych typów.
+tych typów. Zmienna określająca sposób pobierania komórek do przeszczepu
+w obu modelach jest nieistotna statystycznie, zatem nie wpływa to
+istotnie na czas do wystąpienia poszczególnych badanych zdarzeń. Obie
+metody pod tym względem są porównywalne, lecz biorąc pod uwagę
+inwazyjność metod, nasuwa się wniosek, że pobieranie szpiku z krwi
+obwodowej daje pacjentowi większy komfort leczenia w porównaniu do
+tradycyjnej metody pobierania komórek z kości miednicy.
 
 \newpage
 \small
